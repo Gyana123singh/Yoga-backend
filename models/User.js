@@ -18,7 +18,12 @@ const userSchema = new mongoose.Schema({
   sleepScore: { type: String, default: '80/100' },
   country: { type: String, default: 'United States' },
   language: { type: String, default: 'English' },
-  aiPromptsCount: { type: Number, default: 0 }
+  aiPromptsCount: { type: Number, default: 0 },
+  firebaseUid: { type: String, sparse: true, unique: true },
+  authProvider: { type: String, enum: ['google', 'apple', 'email', 'admin'], default: 'google' },
+  isEmailVerified: { type: Boolean, default: false },
+  fcmToken: { type: String, default: null },
+  lastLoginAt: { type: Date, default: Date.now }
 }, {
   timestamps: true
 });

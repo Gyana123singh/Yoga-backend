@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
+app.use('/api/auth', require('./routes/customerAuthRoutes'));
+app.use('/api/customer/home', require('./routes/customerHomeRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/asanas', require('./routes/asanaRoutes'));
@@ -33,9 +35,18 @@ app.use('/api/seed', require('./routes/seedRoutes'));
 app.get('/', (req, res) => {
   res.json({
     status: 'online',
-    app: 'AURA Yoga Admin Backend API',
+    app: 'AURA Yoga API (Admin & Customer Mobile)',
     version: '1.0.0',
     endpoints: [
+      'POST /api/auth/google-login',
+      'GET /api/auth/me',
+      'PUT /api/auth/profile',
+      'POST /api/auth/logout',
+      'GET /api/customer/home',
+      'POST /api/customer/home/personal-session',
+      'PUT /api/customer/home/schedule/:itemId/toggle',
+      'POST /api/customer/home/log-practice',
+      'GET /api/customer/home/search',
       '/api/dashboard/stats',
       '/api/users',
       '/api/asanas',
