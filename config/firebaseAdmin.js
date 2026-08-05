@@ -1,12 +1,34 @@
-const adminModule = require('firebase-admin');
-const admin = adminModule.initializeApp ? adminModule : (adminModule.default || adminModule);
+const admin = require('firebase-admin');
 const path = require('path');
 const fs = require('fs');
 
 let isInitialized = false;
 
+// Safe helper to obtain Firebase cert credential
+const getCertCredential = (config) => {
+  if (typeof admin.cert === 'function') {
+    return admin.cert(config);
+  }
+  if (admin.credential && typeof admin.credential.cert === 'function') {
+    return admin.credential.cert(config);
+  }
+  if (admin.default && typeof admin.default.cert === 'function') {
+    return admin.default.cert(config);
+  }
+  throw new Error('Could not resolve Firebase cert credential function');
+};
+
+// Safe helper to check active Firebase apps
+const getActiveApps = () => {
+  if (typeof admin.getApps === 'function') {
+    return admin.getApps();
+  }
+  return admin.apps || [];
+};
+
 const initFirebaseAdmin = () => {
-  if (isInitialized || (admin.apps && admin.apps.length > 0)) {
+  const apps = getActiveApps();
+  if (isInitialized || apps.length > 0) {
     isInitialized = true;
     return admin;
   }
@@ -17,7 +39,7 @@ const initFirebaseAdmin = () => {
     if (serviceAccountPath && fs.existsSync(path.resolve(serviceAccountPath))) {
       const serviceAccount = require(path.resolve(serviceAccountPath));
       admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: getCertCredential(serviceAccount)
       });
       isInitialized = true;
       console.log('Firebase Admin SDK initialized successfully via service account file.');
@@ -28,7 +50,7 @@ const initFirebaseAdmin = () => {
     if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
       const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
       admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: getCertCredential(serviceAccount)
       });
       isInitialized = true;
       console.log('Firebase Admin SDK initialized successfully via service account JSON string.');
@@ -41,10 +63,9 @@ const initFirebaseAdmin = () => {
     let privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
     if (projectId && clientEmail && privateKey) {
-      // Handle escaped newlines in private key string
       privateKey = privateKey.replace(/\\n/g, '\n');
       admin.initializeApp({
-        credential: admin.credential.cert({
+        credential: getCertCredential({
           projectId,
           clientEmail,
           privateKey
@@ -55,7 +76,7 @@ const initFirebaseAdmin = () => {
       return admin;
     }
 
-    console.warn('⚠️ Firebase Admin SDK Warning: Credentials not found in .env (FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, or FIREBASE_SERVICE_ACCOUNT_PATH). Development mode token parsing enabled.');
+    console.warn('⚠️ Firebase Admin SDK Warning: Credentials not found in .env. Development mode token parsing enabled.');
   } catch (error) {
     console.error('❌ Failed to initialize Firebase Admin SDK:', error.message);
   }
@@ -76,16 +97,15 @@ const verifyFirebaseIdToken = async (idToken) => {
     throw new Error('ID Token is required');
   }
 
-  if (isInitialized && admin.apps && admin.apps.length > 0) {
-    // Official Firebase Admin ID token verification
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+  const apps = getActiveApps();
+  if (isInitialized && apps.length > 0) {
+    const authInstance = typeof admin.auth === 'function' ? admin.auth() : admin.default.auth();
+    const decodedToken = await authInstance.verifyIdToken(idToken);
     return decodedToken;
   }
 
-  // Development/Fallback Mode when Firebase Admin credentials are not yet configured in .env
   console.log('ℹ️ Verifying token in development fallback mode...');
   
-  // Basic payload decode if it's a valid JWT format (header.payload.signature)
   try {
     const parts = idToken.split('.');
     if (parts.length === 3) {
@@ -103,10 +123,9 @@ const verifyFirebaseIdToken = async (idToken) => {
       }
     }
   } catch (err) {
-    // Ignore decode error and throw fallback dev response
+    // Ignore decode error
   }
 
-  // Generic fallback object if token string is passed for testing
   return {
     uid: `dev_user_${idToken.slice(0, 8)}`,
     email: `mobile_user_${idToken.slice(0, 6)}@aura.app`,
