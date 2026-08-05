@@ -1,11 +1,12 @@
-const admin = require('firebase-admin');
+const adminModule = require('firebase-admin');
+const admin = adminModule.initializeApp ? adminModule : (adminModule.default || adminModule);
 const path = require('path');
 const fs = require('fs');
 
 let isInitialized = false;
 
 const initFirebaseAdmin = () => {
-  if (isInitialized || admin.apps.length > 0) {
+  if (isInitialized || (admin.apps && admin.apps.length > 0)) {
     isInitialized = true;
     return admin;
   }
@@ -75,7 +76,7 @@ const verifyFirebaseIdToken = async (idToken) => {
     throw new Error('ID Token is required');
   }
 
-  if (isInitialized && admin.apps.length > 0) {
+  if (isInitialized && admin.apps && admin.apps.length > 0) {
     // Official Firebase Admin ID token verification
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     return decodedToken;
