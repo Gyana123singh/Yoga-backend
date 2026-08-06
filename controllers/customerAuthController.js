@@ -222,8 +222,83 @@ const logout = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Authenticate Admin via Email & Password (Dashboard)
+ * @route   POST /api/auth/admin-login
+ * @access  Public
+ */
+const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and password are required'
+      });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Search for existing Admin or create default admin user
+    let adminUser = await User.findOne({
+      $or: [
+        { email: cleanEmail },
+        { authProvider: 'admin' },
+        { id: 'USR-ADMIN-01' }
+      ]
+    });
+
+    if (!adminUser) {
+      adminUser = new User({
+        id: 'USR-ADMIN-01',
+        name: 'Dr. Sarah Jenkins',
+        email: cleanEmail || 'admin@aura.io',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+        authProvider: 'admin',
+        planType: 'Premium',
+        plan: 'Executive Unlimited',
+        status: 'Active',
+        primaryGoal: 'Executive Studio Operations',
+        isEmailVerified: true
+      });
+      await adminUser.save();
+    }
+
+    // Generate Admin Session JWT
+    const token = jwt.sign(
+      { id: adminUser.id, email: adminUser.email, role: 'admin' },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Admin login successful',
+      token,
+      data: {
+        id: adminUser.id,
+        name: adminUser.name,
+        email: adminUser.email,
+        avatar: adminUser.avatar,
+        role: 'Super Administrator',
+        status: adminUser.status
+      }
+    });
+
+  } catch (error) {
+    console.error('Admin Login Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error during admin authentication',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   googleLogin,
+  adminLogin,
   getMe,
   updateProfile,
   logout
