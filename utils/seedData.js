@@ -247,6 +247,439 @@ const MOCK_COUPONS = [
   { code: 'BREATHE10', discountPercent: 10, validUntil: '2026-08-31', maxRedemptions: 200, redemptionsCount: 198, status: 'Active', planTier: 'All Plans' },
 ];
 
+const MOCK_FEELINGS = [
+  { name: 'Calm', emoji: '😊', description: 'Mindful, tranquil and centered state', order: 1, isActive: true },
+  { name: 'Stressed', emoji: '🤯', description: 'High mental tension or anxiety', order: 2, isActive: true },
+  { name: 'Tired', emoji: '😴', description: 'Physically or mentally fatigued', order: 3, isActive: true },
+  { name: 'Unfocused', emoji: '🧠', description: 'Scatter-brained, needing clarity', order: 4, isActive: true },
+  { name: 'Low energy', emoji: '⚡', description: 'Sluggish and in need of energy boost', order: 5, isActive: true },
+  { name: 'Want to exercise', emoji: '🏋️', description: 'Ready for active physical flow', order: 6, isActive: true },
+  { name: 'Stiff', emoji: '🧘', description: 'Tight muscles, joint stiffness', order: 7, isActive: true },
+  { name: 'Need better sleep', emoji: '🌙', description: 'Preparing for deep restful sleep', order: 8, isActive: true }
+];
+
+const MOCK_FOCUS_AREAS = [
+  { name: 'Belly / Core strength', icon: 'target', relatedFeelings: ['Calm', 'Want to exercise', 'Stiff', 'Low energy'], description: 'Abdominal stability & pelvic floor', order: 1, isActive: true },
+  { name: 'Flexibility', icon: 'activity', relatedFeelings: ['Stressed', 'Stiff', 'Calm', 'Tired'], description: 'Deep muscle lengthening and range of motion', order: 2, isActive: true },
+  { name: 'Back and posture', icon: 'spine', relatedFeelings: ['Stressed', 'Stiff', 'Unfocused'], description: 'Spinal decompression and posture alignment', order: 3, isActive: true },
+  { name: 'Hips', icon: 'heart', relatedFeelings: ['Stressed', 'Stiff', 'Need better sleep'], description: 'Hip flexor release and emotional tension reset', order: 4, isActive: true },
+  { name: 'Shoulders', icon: 'user', relatedFeelings: ['Stressed', 'Unfocused', 'Stiff'], description: 'Upper back and trap release', order: 5, isActive: true },
+  { name: 'Balance', icon: 'compass', relatedFeelings: ['Calm', 'Unfocused', 'Want to exercise'], description: 'Single-leg stability and core equilibrium', order: 6, isActive: true },
+  { name: 'Strength', icon: 'dumbbell', relatedFeelings: ['Want to exercise', 'Low energy'], description: 'Full body isometric muscle building', order: 7, isActive: true },
+  { name: 'General fitness', icon: 'zap', relatedFeelings: ['Want to exercise', 'Calm'], description: 'Overall cardiovascular & yoga movement', order: 8, isActive: true },
+  { name: 'Relaxation', icon: 'sun', relatedFeelings: ['Calm', 'Stressed', 'Need better sleep', 'Tired'], description: 'Parasympathetic nerve recovery', order: 9, isActive: true },
+  { name: 'Sleep', icon: 'moon', relatedFeelings: ['Need better sleep', 'Tired', 'Calm'], description: 'Bedtime restorative Yoga Nidra flow', order: 10, isActive: true }
+];
+
+const MOCK_DURATIONS = [
+  { label: '2 min', minutes: 2, order: 1, isActive: true },
+  { label: '5 min', minutes: 5, order: 2, isActive: true },
+  { label: '10 min', minutes: 10, order: 3, isActive: true },
+  { label: '20 min', minutes: 20, order: 4, isActive: true },
+  { label: '30 min', minutes: 30, order: 5, isActive: true },
+  { label: '45 min', minutes: 45, order: 6, isActive: true }
+];
+
+const MOCK_SESSION_CONFIGS = [
+  {
+    feeling: 'Calm',
+    focusArea: 'Belly / Core strength',
+    durationMinutes: 20,
+    title: '20-Minute Belly & Calm',
+    badge: 'YOUR PERSONAL SESSION',
+    steps: [
+      { id: 'step-1', duration: '4 min', durationMinutes: 4, title: 'Breath preparation (Calm reset)', category: 'Breath', color: '#ECFDF5', icon: 'wind', description: 'Deep diaphragmatic breathing with 4-second hold.' },
+      { id: 'step-2', duration: '11 min', durationMinutes: 11, title: 'Belly / Core strength flow', category: 'Yoga Flow', color: '#FFEDD5', icon: 'user', description: 'Navasana (Boat Pose), Plank holds and gentle core engagement.' },
+      { id: 'step-3', duration: '3 min', durationMinutes: 3, title: 'Deep body relaxation', category: 'Relaxation', color: '#F3E8FF', icon: 'lotus', description: 'Recline spinal twist with slow exhalations.' },
+      { id: 'step-4', duration: '2 min', durationMinutes: 2, title: 'Cooling breath', category: 'Cooling', color: '#FFE4E6', icon: 'heart', description: 'Sheetali cooling breath to lower body temperature.' }
+    ],
+    isActive: true
+  },
+  {
+    feeling: 'Stressed',
+    focusArea: 'Flexibility',
+    durationMinutes: 15,
+    title: '15-Minute Stressed & Flexibility Reset',
+    badge: 'YOUR PERSONAL SESSION',
+    steps: [
+      { id: 'step-1', duration: '3 min', durationMinutes: 3, title: 'Nervous system calming breath', category: 'Breath', color: '#ECFDF5', icon: 'wind', description: 'Box breathing (4s in, 4s hold, 4s out, 4s hold).' },
+      { id: 'step-2', duration: '8 min', durationMinutes: 8, title: 'Deep spine & hip flexibility flow', category: 'Yoga Flow', color: '#FFEDD5', icon: 'user', description: 'Gentle Cat-Cow and Pigeon Pose for hip flexors.' },
+      { id: 'step-3', duration: '2 min', durationMinutes: 2, title: 'Muscle tension release', category: 'Relaxation', color: '#F3E8FF', icon: 'lotus', description: 'Progressive muscle relaxation from neck to feet.' },
+      { id: 'step-4', duration: '2 min', durationMinutes: 2, title: 'Guided grounding breath', category: 'Cooling', color: '#FFE4E6', icon: 'heart', description: 'Grounding 4-7-8 exhale focus.' }
+    ],
+    isActive: true
+  }
+];
+
+const MOCK_QUICK_PRACTICES = [
+  {
+    title: '2 min Quick Reset',
+    subtitle: 'Mindful Breath • Inner Balance',
+    category: 'quick_timer',
+    icon: 'clock',
+    durationMinutes: 2,
+    badgeText: 'Quick Practice Session',
+    bgImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a14f4e.mp3',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Breathe In Deeply' },
+      { phase: 'HOLD', durationSeconds: 4, instruction: 'Retain Breath Gently' },
+      { phase: 'EXHALE', durationSeconds: 4, instruction: 'Release Slowly' },
+      { phase: 'HOLD', durationSeconds: 2, instruction: 'Rest & Pause' }
+    ],
+    order: 1
+  },
+  {
+    title: '5 min Deep Calm Reset',
+    subtitle: 'Nervous System Reset • Stress Release',
+    category: 'quick_timer',
+    icon: 'clock',
+    durationMinutes: 5,
+    badgeText: 'Quick Practice Session',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Breathe In Deeply' },
+      { phase: 'HOLD', durationSeconds: 7, instruction: 'Hold Breath Gently' },
+      { phase: 'EXHALE', durationSeconds: 8, instruction: 'Exhale Completely' }
+    ],
+    order: 2
+  },
+  {
+    title: '10 min Mindful Balance',
+    subtitle: 'Full Body Alignment & Relaxation',
+    category: 'quick_timer',
+    icon: 'clock',
+    durationMinutes: 10,
+    badgeText: 'Quick Practice Session',
+    bgImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 5, instruction: 'Inhale Solar Energy' },
+      { phase: 'EXHALE', durationSeconds: 5, instruction: 'Exhale Tension' }
+    ],
+    order: 3
+  },
+
+  // SOS Moment Breathing Items (Images 3 & 4)
+  {
+    title: 'Calm Me (Box Breathing 4-4-4-4)',
+    subtitle: 'Instant Anxiety Relief • Equal Pace',
+    category: 'sos_moment',
+    icon: 'heart',
+    durationMinutes: 3,
+    badgeText: 'Breathing SOS',
+    bgImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a14f4e.mp3',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Breathe In Deeply' },
+      { phase: 'HOLD', durationSeconds: 4, instruction: 'Retain Breath Gently' },
+      { phase: 'EXHALE', durationSeconds: 4, instruction: 'Exhale Smoothly' },
+      { phase: 'HOLD', durationSeconds: 4, instruction: 'Pause at Bottom' }
+    ],
+    order: 1
+  },
+  {
+    title: 'Help Me Sleep (4-7-8 Sleep Breath)',
+    subtitle: 'Parasympathetic Activation • Deep Rest',
+    category: 'sos_moment',
+    icon: 'moon',
+    durationMinutes: 5,
+    badgeText: 'Breathing SOS',
+    bgImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Inhale Quietly Through Nose' },
+      { phase: 'HOLD', durationSeconds: 7, instruction: 'Hold Your Breath Softly' },
+      { phase: 'EXHALE', durationSeconds: 8, instruction: 'Whoosh Exhale Through Mouth' }
+    ],
+    order: 2
+  },
+  {
+    title: 'Give Me Energy (Kapalabhati Breath)',
+    subtitle: 'Skull-Shining Rapid Vitality Boost',
+    category: 'sos_moment',
+    icon: 'zap',
+    durationMinutes: 3,
+    badgeText: 'Breathing SOS',
+    bgImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 2, instruction: 'Passive Quick Inhale' },
+      { phase: 'EXHALE', durationSeconds: 1, instruction: 'Active Sharp Exhale' }
+    ],
+    order: 3
+  },
+  {
+    title: 'Help Me Focus (Coherent 5-5 Breath)',
+    subtitle: 'Heart Rate Variability Alignment',
+    category: 'sos_moment',
+    icon: 'target',
+    durationMinutes: 4,
+    badgeText: 'Breathing SOS',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 5, instruction: 'Inhale Steadily (5 sec)' },
+      { phase: 'EXHALE', durationSeconds: 5, instruction: 'Exhale Smoothly (5 sec)' }
+    ],
+    order: 4
+  },
+  {
+    title: 'Box Breathing (4-4-4-4)',
+    subtitle: 'Navy SEAL tactical breathing technique to rapidly calm the nervous system and heighten focus.',
+    category: 'library',
+    filterCategory: 'Calm',
+    patternTag: 'Pattern: 4-4-4-4',
+    icon: 'wind',
+    durationMinutes: 5,
+    badgeText: 'Pranayama Library',
+    benefits: [
+      'Lowers cortisol stress hormone',
+      'Enhances mental clarity',
+      'Balances autonomic nervous system'
+    ],
+    safetyCaution: 'If pregnant or experiencing high blood pressure, reduce hold phase to comfortable level.',
+    bgImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a14f4e.mp3',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Breathe In Deeply' },
+      { phase: 'HOLD', durationSeconds: 4, instruction: 'Retain Breath Gently' },
+      { phase: 'EXHALE', durationSeconds: 4, instruction: 'Release Slowly' },
+      { phase: 'HOLD', durationSeconds: 4, instruction: 'Rest & Pause' }
+    ],
+    order: 5
+  },
+  {
+    title: '4-7-8 Relaxing Breath',
+    subtitle: 'Dr. Andrew Weil natural tranquilizer for the nervous system.',
+    category: 'library',
+    filterCategory: 'Sleep',
+    patternTag: 'Pattern: 4-7-8',
+    icon: 'wind',
+    durationMinutes: 4,
+    badgeText: 'Pranayama Library',
+    benefits: [
+      'Helps transition to deep sleep',
+      'Slowing heart rate & nervous system',
+      'Relieves tension & insomnia'
+    ],
+    safetyCaution: 'Do not practice while driving or operating machinery.',
+    bgImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 4, instruction: 'Breathe In Through Nose' },
+      { phase: 'HOLD', durationSeconds: 7, instruction: 'Hold Breath Calmly' },
+      { phase: 'EXHALE', durationSeconds: 8, instruction: 'Whoosh Exhale Through Mouth' }
+    ],
+    order: 6
+  },
+  {
+    title: 'Coherent Breathing (5-5)',
+    subtitle: 'Optimal 6-breaths-per-minute rhythm that synchronizes heart rate variability.',
+    category: 'library',
+    filterCategory: 'Focus',
+    patternTag: 'Pattern: 5-0-5',
+    icon: 'wind',
+    durationMinutes: 6,
+    badgeText: 'Pranayama Library',
+    benefits: [
+      'Maximizes Heart Rate Variability (HRV)',
+      'Optimizes brain function & focus',
+      'Grounds emotional state'
+    ],
+    safetyCaution: 'Breathe naturally without straining.',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    voiceGuidanceUrl: '',
+    phases: [
+      { phase: 'INHALE', durationSeconds: 5, instruction: 'Smooth Inhale' },
+      { phase: 'EXHALE', durationSeconds: 5, instruction: 'Smooth Exhale' }
+    ],
+    order: 7
+  }
+];
+
+const MOCK_YOGA_PROGRAMS = [
+  {
+    title: 'Core & Belly Strength',
+    subtitle: 'Build a stronger core and improve stability & overall fitness.',
+    goalCategory: 'Strength',
+    totalDays: 30,
+    difficultyLevel: 'Intermediate',
+    enrolledCount: '8.5K+',
+    heroImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1200&auto=format&fit=crop',
+    tags: ['Core Activation', 'Abdominal Strength'],
+    freeDaysCount: 2,
+    improvements: [
+      { name: 'Core Stability', icon: 'grid' },
+      { name: 'Abdominal Strength', icon: 'zap' },
+      { name: 'Balance', icon: 'user' },
+      { name: 'Breath Coordination', icon: 'wind' }
+    ],
+    dailySchedules: Array.from({ length: 30 }, (_, idx) => {
+      const dayNum = idx + 1;
+      return {
+        dayNumber: dayNum,
+        title: dayNum === 1 ? 'Core Awareness' : dayNum === 2 ? 'Breath + Core' : `Balance & Core Flow ${dayNum}`,
+        focusTitle: dayNum === 1 ? 'Core Activation' : 'Core & Abdominal Strengthening',
+        focusDescription: 'Activate your core, improve body awareness and connect with your breath.',
+        durationMinutes: 12 + (dayNum % 5),
+        estimatedCalories: 100 + (dayNum * 3),
+        difficultyTag: 'Beginner Friendly',
+        isFree: dayNum <= 2,
+        steps: [
+          {
+            stepNumber: 1,
+            title: 'Breath Preparation',
+            subtitle: 'Deep breathing',
+            durationSeconds: 180,
+            instructionTitle: 'Inhale',
+            instructionDetail: 'Breathe in slowly through your nose and fill your lungs and slowly release the air from your lungs.',
+            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
+          },
+          {
+            stepNumber: 2,
+            title: 'Cat Cow',
+            subtitle: 'Spinal warm up',
+            durationSeconds: 120,
+            instructionTitle: 'Arch & Curve',
+            instructionDetail: 'Inhale to drop your belly and lift your gaze. Exhale to round your spine toward the ceiling.',
+            videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+            poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
+          },
+          {
+            stepNumber: 3,
+            title: 'Boat Pose (Navasana)',
+            subtitle: 'Core isometric hold',
+            durationSeconds: 150,
+            instructionTitle: 'Engage Abdominals',
+            instructionDetail: 'Balance on your sit bones, lift your chest and extend your legs to 45 degrees.',
+            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
+          },
+          {
+            stepNumber: 4,
+            title: 'Forearm Plank',
+            subtitle: 'Full body core stabilizer',
+            durationSeconds: 120,
+            instructionTitle: 'Keep Spine Neutral',
+            instructionDetail: 'Press forearms into the mat, squeeze glutes, and draw navel toward your spine.',
+            videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+            poseImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=800&auto=format&fit=crop'
+          },
+          {
+            stepNumber: 5,
+            title: 'Cool Down & Savasana',
+            subtitle: 'Restorative relaxation',
+            durationSeconds: 180,
+            instructionTitle: 'Release Tension',
+            instructionDetail: 'Lie flat on your back, close your eyes, and let your breath return to normal.',
+            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
+          }
+        ]
+      };
+    }),
+    order: 1
+  },
+  {
+    title: 'Better Posture',
+    subtitle: 'Align your spine, open chest, and relieve desk strain.',
+    goalCategory: 'Mobility',
+    totalDays: 21,
+    difficultyLevel: 'All Levels',
+    enrolledCount: '12.1K+',
+    heroImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    tags: ['Upper Back', 'Shoulders', 'Spinal Alignment'],
+    freeDaysCount: 2,
+    improvements: [
+      { name: 'Spinal Mobility', icon: 'grid' },
+      { name: 'Shoulder Openers', icon: 'heart' }
+    ],
+    dailySchedules: Array.from({ length: 21 }, (_, idx) => ({
+      dayNumber: idx + 1,
+      title: `Posture Alignment Day ${idx + 1}`,
+      focusTitle: 'Shoulder & Chest Expansion',
+      focusDescription: 'Open your chest muscles and strengthen upper back postural muscles.',
+      durationMinutes: 15,
+      estimatedCalories: 95,
+      difficultyTag: 'All Levels',
+      isFree: idx + 1 <= 2,
+      steps: [
+        {
+          stepNumber: 1,
+          title: 'Seated Spinal Twist',
+          subtitle: 'Gentle spinal warm-up',
+          durationSeconds: 180,
+          instructionTitle: 'Inhale & Lengthen',
+          instructionDetail: 'Inhale to sit tall, exhale to gently twist toward your right shoulder.',
+          videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+          poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
+        }
+      ]
+    })),
+    order: 2
+  },
+  {
+    title: 'Back Mobility',
+    subtitle: 'Restore healthy spinal curvature and release lower back tightness.',
+    goalCategory: 'Mobility',
+    totalDays: 14,
+    difficultyLevel: 'All Levels',
+    enrolledCount: '6.4K+',
+    heroImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    tags: ['Lower Back', 'Hip Flexors', 'Flexibility'],
+    freeDaysCount: 2,
+    improvements: [
+      { name: 'Lower Back Release', icon: 'zap' }
+    ],
+    dailySchedules: Array.from({ length: 14 }, (_, idx) => ({
+      dayNumber: idx + 1,
+      title: `Back Decompression Day ${idx + 1}`,
+      focusTitle: 'Lumbar Decompression',
+      focusDescription: 'Decompress lumbar vertebrae and stretch tight hamstrings.',
+      durationMinutes: 14,
+      estimatedCalories: 85,
+      difficultyTag: 'Gentle',
+      isFree: idx + 1 <= 2,
+      steps: [
+        {
+          stepNumber: 1,
+          title: 'Child Pose (Balasana)',
+          subtitle: 'Restorative decompression',
+          durationSeconds: 180,
+          instructionTitle: 'Rest Hips on Heels',
+          instructionDetail: 'Extend arms forward on the mat and sink hips back onto your heels.',
+          videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+          poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
+        }
+      ]
+    })),
+    order: 3
+  }
+];
+
 module.exports = {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -254,5 +687,14 @@ module.exports = {
   MOCK_RECOMMENDATIONS_RULES,
   MOCK_LIVE_CLASSES,
   MOCK_SMARTWATCH_STATS,
-  MOCK_COUPONS
+  MOCK_COUPONS,
+  MOCK_FEELINGS,
+  MOCK_FOCUS_AREAS,
+  MOCK_DURATIONS,
+  MOCK_SESSION_CONFIGS,
+  MOCK_QUICK_PRACTICES,
+  MOCK_YOGA_PROGRAMS
 };
+
+
+

@@ -6,6 +6,12 @@ const LiveClass = require('../models/LiveClass');
 const HealthSync = require('../models/HealthSync');
 const Coupon = require('../models/Coupon');
 const Setting = require('../models/Setting');
+const Feeling = require('../models/Feeling');
+const FocusArea = require('../models/FocusArea');
+const DurationOption = require('../models/DurationOption');
+const DailySessionConfig = require('../models/DailySessionConfig');
+const QuickPractice = require('../models/QuickPractice');
+const YogaProgram = require('../models/YogaProgram');
 const {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -13,7 +19,13 @@ const {
   MOCK_RECOMMENDATIONS_RULES,
   MOCK_LIVE_CLASSES,
   MOCK_SMARTWATCH_STATS,
-  MOCK_COUPONS
+  MOCK_COUPONS,
+  MOCK_FEELINGS,
+  MOCK_FOCUS_AREAS,
+  MOCK_DURATIONS,
+  MOCK_SESSION_CONFIGS,
+  MOCK_QUICK_PRACTICES,
+  MOCK_YOGA_PROGRAMS
 } = require('../utils/seedData');
 
 const runSeeder = async () => {
@@ -25,6 +37,12 @@ const runSeeder = async () => {
   await HealthSync.deleteMany({});
   await Coupon.deleteMany({});
   await Setting.deleteMany({});
+  await Feeling.deleteMany({});
+  await FocusArea.deleteMany({});
+  await DurationOption.deleteMany({});
+  await DailySessionConfig.deleteMany({});
+  await QuickPractice.deleteMany({});
+  await YogaProgram.deleteMany({});
 
   await User.insertMany(MOCK_USERS);
   await Asana.insertMany(MOCK_ASANAS);
@@ -33,6 +51,13 @@ const runSeeder = async () => {
   await LiveClass.insertMany(MOCK_LIVE_CLASSES);
   await HealthSync.insertMany(MOCK_SMARTWATCH_STATS);
   await Coupon.insertMany(MOCK_COUPONS);
+  await Feeling.insertMany(MOCK_FEELINGS);
+  await FocusArea.insertMany(MOCK_FOCUS_AREAS);
+  await DurationOption.insertMany(MOCK_DURATIONS);
+  await DailySessionConfig.insertMany(MOCK_SESSION_CONFIGS);
+  await QuickPractice.insertMany(MOCK_QUICK_PRACTICES);
+  await YogaProgram.insertMany(MOCK_YOGA_PROGRAMS);
+
   await Setting.create({
     siteName: 'AURA Yoga & Mindfulness Platform',
     aiModelVersion: 'v2.4-NeuralFlow',
