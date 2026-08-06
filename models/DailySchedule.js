@@ -1,28 +1,34 @@
 const mongoose = require('mongoose');
 
-const scheduleItemSchema = new mongoose.Schema({
-  itemId: { type: String, required: true },
-  title: { type: String, required: true },
-  time: { type: String, required: true },
-  duration: { type: String, default: '10 Minutes' },
-  durationMinutes: { type: Number, default: 10 },
-  icon: { type: String, default: '🧘' },
-  completed: { type: Boolean, default: false },
-  completedAt: { type: Date, default: null },
-  category: { type: String, default: 'General' }
-});
-
 const dailyScheduleSchema = new mongoose.Schema({
-  userId: { type: String, required: true, index: true },
-  date: { type: String, required: true, index: true }, // Format: YYYY-MM-DD
-  completedCount: { type: Number, default: 0 },
-  totalCount: { type: Number, default: 3 },
-  items: [scheduleItemSchema]
+  title: { type: String, required: true }, // e.g. "Morning Mindful Breath", "Core Yoga Flow", "Sleep Journey Practice"
+  category: {
+    type: String,
+    enum: ['Breathing', 'Yoga', 'Meditation', 'Relaxation', 'Sleep'],
+    default: 'Breathing'
+  },
+  scheduledDate: { type: String, required: true }, // "YYYY-MM-DD" format, e.g. "2026-07-04"
+  scheduledTime: { type: String, default: '07:15 AM' },
+  durationMinutes: { type: Number, default: 10 },
+  status: { type: String, enum: ['Pending', 'Completed', 'Missed'], default: 'Pending' },
+  icon: { type: String, default: 'sun' },
+  bgImageUrl: {
+    type: String,
+    default: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop'
+  },
+  frameDesignUrl: {
+    type: String,
+    default: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png'
+  },
+  bgMusicUrl: {
+    type: String,
+    default: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'
+  },
+  voiceGuidanceUrl: { type: String, default: '' },
+  userId: { type: String, default: 'guest' },
+  order: { type: Number, default: 1 }
 }, {
   timestamps: true
 });
-
-// Ensure a single schedule document per user per day
-dailyScheduleSchema.index({ userId: 1, date: 1 }, { unique: true });
 
 module.exports = mongoose.model('DailySchedule', dailyScheduleSchema);

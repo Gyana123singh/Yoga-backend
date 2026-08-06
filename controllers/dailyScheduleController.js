@@ -1,0 +1,213 @@
+const DailySchedule = require('../models/DailySchedule');
+
+/**
+ * Helper to format date as YYYY-MM-DD
+ */
+const getTodayDateString = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * Helper to build static URL for uploaded files
+ */
+const buildFileUrl = (req, file) => {
+  if (!file) return null;
+  const protocol = req.protocol || 'http';
+  const host = req.get('host') || 'localhost:5000';
+  return `${protocol}://${host}/uploads/media/${file.filename}`;
+};
+
+/**
+ * @desc    Get schedules for specific date
+ * @route   GET /api/daily-schedule
+ * @access  Public
+ */
+const getSchedulesByDate = async (req, res) => {
+  try {
+    const targetDate = req.query.date || getTodayDateString();
+    const schedules = await DailySchedule.find({ scheduledDate: targetDate }).sort({ order: 1, createdAt: 1 });
+
+    const total = schedules.length;
+    const completedCount = schedules.filter(s => s.status === 'Completed').length;
+
+    res.json({
+      success: true,
+      data: schedules,
+      meta: {
+        date: targetDate,
+        total,
+        completedCount
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Add new Practice Routine to Calendar
+ * @route   POST /api/daily-schedule
+ * @access  Public
+ */
+const addSchedule = async (req, res) => {
+  try {
+    const {
+      title,
+      category,
+      scheduledDate,
+      scheduledTime,
+      durationMinutes,
+      icon,
+      bgImageUrlCustom,
+      frameDesignUrlCustom,
+      bgMusicUrlCustom
+    } = req.body;
+
+    const files = req.files || {};
+    const targetDate = scheduledDate || getTodayDateString();
+
+    const bgImageUrl = buildFileUrl(req, files.bgImage ? files.bgImage[0] : null) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
+    const frameDesignUrl = buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
+    const bgMusicUrl = buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null) || bgMusicUrlCustom || 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
+
+    const count = await DailySchedule.countDocuments({ scheduledDate: targetDate });
+
+    const newSchedule = new DailySchedule({
+      title: title || 'Mindful Routine',
+      category: category || 'Breathing',
+      scheduledDate: targetDate,
+      scheduledTime: scheduledTime || '07:00 AM',
+      durationMinutes: parseInt(durationMinutes) || 10,
+      status: 'Pending',
+      icon: icon || (category === 'Yoga' ? 'yoga' : category === 'Meditation' ? 'brain' : category === 'Sleep' ? 'moon' : 'sun'),
+      bgImageUrl,
+      frameDesignUrl,
+      bgMusicUrl,
+      order: count + 1
+    });
+
+    await newSchedule.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Practice routine added to calendar!',
+      data: newSchedule
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Toggle Schedule Completion Status (Pending <-> Completed)
+ * @route   PUT /api/daily-schedule/:id/toggle-complete
+ * @access  Public
+ */
+const toggleScheduleStatus = async (req, res) => {
+  try {
+    const schedule = await DailySchedule.findById(req.params.id);
+    if (!schedule) {
+      return res.status(404).json({ success: false, message: 'Schedule item not found' });
+    }
+
+    schedule.status = schedule.status === 'Completed' ? 'Pending' : 'Completed';
+    await schedule.save();
+
+    res.json({
+      success: true,
+      message: `Routine marked as ${schedule.status}!`,
+      data: schedule
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Delete Schedule Item
+ * @route   DELETE /api/daily-schedule/:id
+ * @access  Public
+ */
+const deleteSchedule = async (req, res) => {
+  try {
+    const deleted = await DailySchedule.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: 'Schedule item not found' });
+    }
+    res.json({ success: true, message: 'Routine deleted from calendar' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * @desc    Get Month Stats Summary (Completed, Partially Completed, Missed)
+ * @route   GET /api/daily-schedule/month-stats
+ * @access  Public
+ */
+const getMonthStats = async (req, res) => {
+  try {
+    const { year = 2026, month = 7 } = req.query;
+    const prefix = `${year}-${String(month).padStart(2, '0')}`;
+
+    const monthSchedules = await DailySchedule.find({
+      scheduledDate: { $regex: `^${prefix}` }
+    });
+
+    // Group by date
+    const dateMap = {};
+    monthSchedules.forEach(item => {
+      if (!dateMap[item.scheduledDate]) {
+        dateMap[item.scheduledDate] = { total: 0, completed: 0 };
+      }
+      dateMap[item.scheduledDate].total += 1;
+      if (item.status === 'Completed') {
+        dateMap[item.scheduledDate].completed += 1;
+      }
+    });
+
+    let completedDays = 0;
+    let partiallyCompleted = 0;
+    const activeDatesWithStatus = {};
+
+    Object.keys(dateMap).forEach(d => {
+      const { total, completed } = dateMap[d];
+      if (completed === total && total > 0) {
+        completedDays += 1;
+        activeDatesWithStatus[d] = 'completed';
+      } else if (completed > 0 && completed < total) {
+        partiallyCompleted += 1;
+        activeDatesWithStatus[d] = 'partially';
+      } else {
+        activeDatesWithStatus[d] = 'not_completed';
+      }
+    });
+
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const missedDays = daysInMonth - (completedDays + partiallyCompleted);
+
+    res.json({
+      success: true,
+      data: {
+        completedDays,
+        partiallyCompleted,
+        missedDays: Math.max(0, missedDays),
+        activeDatesWithStatus
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = {
+  getSchedulesByDate,
+  addSchedule,
+  toggleScheduleStatus,
+  deleteSchedule,
+  getMonthStats
+};

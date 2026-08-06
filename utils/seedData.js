@@ -116,35 +116,82 @@ const MOCK_BREATHING_TECHNIQUES = [
   {
     id: 'BRT-02',
     name: '4-7-8 Relaxing Breath',
-    category: 'Sleep & Anxiety',
-    pattern: 'Inhale 4s • Hold 7s • Exhale 8s',
-    benefits: 'Acts as a natural tranquilizer for the nervous system, boosting GABA levels.',
-    audioGuide: 'Voice 03 (Deep Male - Julian)',
-    defaultDuration: '10 Minutes',
-    difficulty: 'Intermediate',
-    iconColor: 'from-emerald-500 to-teal-500'
+    title: 'Kapalbhati Pranayama',
+    subtitle: 'Purifying Breath • Energizing Mind',
+    badgeTag: 'CLEANSE',
+    category: 'Breathing',
+    totalRounds: 3,
+    durationMinutes: 5,
+    heroImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    demoVideoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    inhaleSeconds: 4,
+    holdSeconds: 4,
+    exhaleSeconds: 4,
+    whatIs: 'Kapalbhati is a powerful yogic breathing technique that involves rapid, forceful exhalations and passive inhalations.',
+    benefits: 'Improves digestion, boosts energy, detoxifies body, enhances lung capacity, and sharpens mental focus.',
+    correctPosture: 'Sit in a comfortable meditative posture such as Sukhasana or Padmasana with spine erect and shoulders relaxed.',
+    instructions: 'General instructions and important guidelines you should know before starting your practice.',
+    howToDo: 'Step-by-step method to practice Kapalbhati correctly for maximum benefit. Take a deep inhale and exhale forcefully pulling navel inward.',
+    whatItDoesntGuarantee: 'Kapalbhati is effective for many conditions but it is not a cure for all chronic ailments without medical guidance.',
+    contraindications: 'Certain health conditions where Kapalbhati should be avoided: pregnancy, high blood pressure, heart diseases, hernia, and recent abdominal surgery.',
+    originHistory: 'Kapalbhati originated from ancient yogic texts in India (Hatha Yoga Pradipika). The word comes from Kapal (skull) and Bhati (shining).',
+    order: 1,
+    isActive: true
   },
   {
-    id: 'BRT-03',
-    name: 'Nadi Shodhana (Alternate Nostril)',
-    category: 'Hemispheric Balance',
-    pattern: 'Left Inhale 4s • Right Exhale 4s • Right Inhale 4s • Left Exhale 4s',
-    benefits: 'Balances left and right brain hemispheres, harmonizes subtle energy channels.',
-    audioGuide: 'Voice 02 (Gentle Female - Priya)',
-    defaultDuration: '7 Minutes',
-    difficulty: 'Intermediate',
-    iconColor: 'from-amber-500 to-rose-500'
+    title: 'Pranayama',
+    subtitle: 'Vitality Breath • Balance & Clarity',
+    badgeTag: 'VITALITY',
+    category: 'Breathing',
+    totalRounds: 3,
+    durationMinutes: 7,
+    heroImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1200&auto=format&fit=crop',
+    demoVideoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+    bgImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    inhaleSeconds: 4,
+    holdSeconds: 4,
+    exhaleSeconds: 4,
+    whatIs: 'Anulom Vilom (Alternate Nostril Breathing) balances the nervous system and harmonizes right and left brain hemispheres.',
+    benefits: 'Calms anxiety, regulates blood pressure, balances autonomic nervous system, and improves sleep quality.',
+    correctPosture: 'Sit upright with legs crossed in Padmasana or Siddhasana. Keep Vishnu Mudra on your right hand.',
+    instructions: 'Close right nostril with thumb, inhale through left nostril. Close left nostril with ring finger, exhale through right.',
+    howToDo: 'Inhale left 4s, hold 4s, exhale right 4s. Repeat continuously for 5 to 10 minutes.',
+    whatItDoesntGuarantee: 'Helps stress management but does not replace prescription medical treatment for chronic illness.',
+    contraindications: 'Do not force breath if suffering from acute nasal blockage or severe cold.',
+    originHistory: 'Rooted in ancient Vedic traditions to purify the Nadis (energy channels) in the subtle body.',
+    order: 2,
+    isActive: true
   },
   {
-    id: 'BRT-04',
-    name: 'Kapalabhati (Skull-Shining Breath)',
-    category: 'Vitality & Detox',
-    pattern: 'Passive Inhale • Forceful Abdominal Exhale (60 pumps/min)',
-    benefits: 'Cleanses respiratory tract, stimulates digestive fire (Agni), boosts alertness.',
-    audioGuide: 'Voice 04 (Energetic Male - Dev)',
-    defaultDuration: '3 Minutes',
-    difficulty: 'Advanced',
-    iconColor: 'from-rose-500 to-purple-600'
+    title: 'Deep Relaxation Breathing',
+    subtitle: 'Restful Mind • Stress Relief',
+    badgeTag: 'DEEP RELAXATION',
+    category: 'Breathing',
+    totalRounds: 3,
+    durationMinutes: 10,
+    heroImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    demoVideoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+    bgImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    inhaleSeconds: 4,
+    holdSeconds: 7,
+    exhaleSeconds: 8,
+    whatIs: 'The 4-7-8 breathing technique acts as a natural tranquilizer for the nervous system.',
+    benefits: 'Lowers heart rate, promotes deep muscle relaxation, and helps ease sleep onset.',
+    correctPosture: 'Lie down flat on back or sit comfortably with back supported.',
+    instructions: 'Inhale silently through nose for 4s, hold breath for 7s, exhale audibly through mouth for 8s.',
+    howToDo: 'Perform 4 full cycles before sleep or whenever feeling acute overwhelm.',
+    whatItDoesntGuarantee: 'May cause mild lightheadedness if practiced too fast.',
+    contraindications: 'Avoid holding breath if pregnant or if suffering from severe lung disorders.',
+    originHistory: 'Popularized by Dr. Andrew Weil based on ancient Pranayama breath retention principles.',
+    order: 3,
+    isActive: true
   }
 ];
 
@@ -680,6 +727,103 @@ const MOCK_YOGA_PROGRAMS = [
   }
 ];
 
+const getTodayDateStr = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const MOCK_DAILY_SCHEDULES = [
+  {
+    title: 'Morning Mindful Breath',
+    category: 'Breathing',
+    scheduledDate: getTodayDateStr(),
+    scheduledTime: '07:15 AM',
+    durationMinutes: 10,
+    status: 'Pending',
+    icon: 'sun',
+    bgImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    order: 1
+  },
+  {
+    title: 'Core Yoga Flow',
+    category: 'Yoga',
+    scheduledDate: getTodayDateStr(),
+    scheduledTime: '05:00 PM',
+    durationMinutes: 20,
+    status: 'Pending',
+    icon: 'yoga',
+    bgImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    order: 2
+  },
+  {
+    title: 'Sleep Journey Practice',
+    category: 'Sleep',
+    scheduledDate: getTodayDateStr(),
+    scheduledTime: '10:00 PM',
+    durationMinutes: 15,
+    status: 'Pending',
+    icon: 'moon',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    order: 3
+  }
+];
+
+const MOCK_EXERCISES = [
+  {
+    title: 'Balasana',
+    subtitle: 'Restorative Decompression • Spine Extension',
+    badgeTag: 'REST',
+    category: 'Exercises',
+    durationMinutes: 10,
+    heroImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1200&auto=format&fit=crop',
+    demoVideoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+    bgImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    whatIs: 'Balasana (Child Pose) is a gentle, restorative yoga posture that lengthens the spine and calms the central nervous system.',
+    benefits: 'Gently stretches hips, thighs, and ankles. Relieves lower back strain while promoting deep mental relaxation.',
+    correctPosture: 'Kneel on the mat, bring big toes together, sit on heels, and fold torso forward extending arms out long.',
+    instructions: 'General instructions and alignment guidelines before beginning your movement flow.',
+    howToDo: 'Rest forehead on mat, extend arms forward, and breathe deeply into lower back for 5-10 minutes.',
+    whatItDoesntGuarantee: 'Provides immediate tension relief but is not a permanent substitute for professional orthopedic care.',
+    contraindications: 'Avoid or use support if suffering from severe knee joint injury, ankle sprain, or late-stage pregnancy.',
+    originHistory: 'Originated from traditional Hatha Yoga. Bala in Sanskrit means Child and Asana means Posture.',
+    order: 1,
+    isActive: true
+  },
+  {
+    title: 'Padmasana',
+    subtitle: 'Meditative Stability • Hip Opening',
+    badgeTag: 'MEDITATION',
+    category: 'Exercises',
+    durationMinutes: 15,
+    heroImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    demoVideoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop',
+    frameDesignUrl: 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png',
+    bgMusicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    whatIs: 'Padmasana (Lotus Pose) is the classic cross-legged posture designed for deep pranayama and meditation.',
+    benefits: 'Opens hips, improves posture, keeps spine erect, and stabilizes the autonomic nervous system.',
+    correctPosture: 'Sit on mat, place right foot on left thigh and left foot on right thigh. Chin parallel to ground.',
+    instructions: 'Prepare hips with warm-up stretches before holding full lotus pose.',
+    howToDo: 'Cross legs gently, rest hands on knees in Jnana Mudra, close eyes and focus on breath.',
+    whatItDoesntGuarantee: 'Requires flexibility; do not force knees into position if tight.',
+    contraindications: 'Avoid if suffering from severe knee or ankle injury.',
+    originHistory: 'One of the oldest seated postures recorded in ancient Vedic and Upanishadic literature.',
+    order: 2,
+    isActive: true
+  }
+];
+
 module.exports = {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -693,8 +837,12 @@ module.exports = {
   MOCK_DURATIONS,
   MOCK_SESSION_CONFIGS,
   MOCK_QUICK_PRACTICES,
-  MOCK_YOGA_PROGRAMS
+  MOCK_YOGA_PROGRAMS,
+  MOCK_DAILY_SCHEDULES,
+  MOCK_EXERCISES
 };
+
+
 
 
 

@@ -12,6 +12,8 @@ const DurationOption = require('../models/DurationOption');
 const DailySessionConfig = require('../models/DailySessionConfig');
 const QuickPractice = require('../models/QuickPractice');
 const YogaProgram = require('../models/YogaProgram');
+const DailySchedule = require('../models/DailySchedule');
+const Exercise = require('../models/Exercise');
 const {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -25,7 +27,9 @@ const {
   MOCK_DURATIONS,
   MOCK_SESSION_CONFIGS,
   MOCK_QUICK_PRACTICES,
-  MOCK_YOGA_PROGRAMS
+  MOCK_YOGA_PROGRAMS,
+  MOCK_DAILY_SCHEDULES,
+  MOCK_EXERCISES
 } = require('../utils/seedData');
 
 const runSeeder = async () => {
@@ -43,6 +47,8 @@ const runSeeder = async () => {
   await DailySessionConfig.deleteMany({});
   await QuickPractice.deleteMany({});
   await YogaProgram.deleteMany({});
+  await DailySchedule.deleteMany({});
+  await Exercise.deleteMany({});
 
   await User.insertMany(MOCK_USERS);
   await Asana.insertMany(MOCK_ASANAS);
@@ -57,6 +63,8 @@ const runSeeder = async () => {
   await DailySessionConfig.insertMany(MOCK_SESSION_CONFIGS);
   await QuickPractice.insertMany(MOCK_QUICK_PRACTICES);
   await YogaProgram.insertMany(MOCK_YOGA_PROGRAMS);
+  await DailySchedule.insertMany(MOCK_DAILY_SCHEDULES);
+  await Exercise.insertMany(MOCK_EXERCISES);
 
   await Setting.create({
     siteName: 'AURA Yoga & Mindfulness Platform',
