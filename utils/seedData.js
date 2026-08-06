@@ -824,6 +824,46 @@ const MOCK_EXERCISES = [
   }
 ];
 
+const MOCK_TICKETS = [
+  {
+    ticketNumber: '#TK-1001',
+    customerName: 'Ananya Sharma',
+    customerEmail: 'ananya.sharma@example.com',
+    subject: 'Unable to stream ambient music during Kapalbhati practice',
+    category: 'TECHNICAL_ISSUE',
+    priority: 'HIGH',
+    status: 'OPEN',
+    messages: [
+      {
+        sender: 'CUSTOMER',
+        senderName: 'Ananya Sharma',
+        text: 'Hi Support, whenever I tap start on Kapalbhati practice, the background music buffers for 30 seconds. Could you please check?'
+      }
+    ]
+  },
+  {
+    ticketNumber: '#TK-1002',
+    customerName: 'Rohan Verma',
+    customerEmail: 'rohan.verma@example.com',
+    subject: 'Subscription invoice request for Annual Premium Plan',
+    category: 'SUBSCRIPTION_BILLING',
+    priority: 'MEDIUM',
+    status: 'IN_PROGRESS',
+    messages: [
+      {
+        sender: 'CUSTOMER',
+        senderName: 'Rohan Verma',
+        text: 'Hello team, I need a tax invoice PDF for my $149 subscription payment from yesterday.'
+      },
+      {
+        sender: 'ADMIN',
+        senderName: 'AURA Support Team',
+        text: 'Hi Rohan! We have sent your tax invoice PDF to rohan.verma@example.com.'
+      }
+    ]
+  }
+];
+
 module.exports = {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -839,8 +879,10 @@ module.exports = {
   MOCK_QUICK_PRACTICES,
   MOCK_YOGA_PROGRAMS,
   MOCK_DAILY_SCHEDULES,
-  MOCK_EXERCISES
+  MOCK_EXERCISES,
+  MOCK_TICKETS
 };
+
 
 
 
