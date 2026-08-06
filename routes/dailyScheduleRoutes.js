@@ -5,7 +5,8 @@ const {
   addSchedule,
   toggleScheduleStatus,
   deleteSchedule,
-  getMonthStats
+  getMonthStats,
+  getWeekStats
 } = require('../controllers/dailyScheduleController');
 const { uploadMedia } = require('../middleware/uploadMiddleware');
 
@@ -21,5 +22,6 @@ router.post('/', scheduleUpload, addSchedule);
 router.put('/:id/toggle-complete', toggleScheduleStatus);
 router.delete('/:id', deleteSchedule);
 router.get('/month-stats', getMonthStats);
+router.get('/week-stats', getWeekStats);
 
 module.exports = router;

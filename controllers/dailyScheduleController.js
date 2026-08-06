@@ -204,10 +204,89 @@ const getMonthStats = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Get Weekly Stats & Insights for Flutter Home Screen (This Week Card)
+ * @route   GET /api/daily-schedule/week-stats
+ * @access  Public
+ */
+const getWeekStats = async (req, res) => {
+  try {
+    // Calculate start and end of current week (Monday to Sunday)
+    const now = new Date();
+    const currentDayOfWeek = now.getDay();
+    const distanceToMonday = currentDayOfWeek === 0 ? -6 : 1 - currentDayOfWeek;
+
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + distanceToMonday);
+
+    const weekDates = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      weekDates.push(`${yyyy}-${mm}-${dd}`);
+    }
+
+    // Query schedules for this week
+    const weekSchedules = await DailySchedule.find({
+      scheduledDate: { $in: weekDates }
+    });
+
+    let totalMinutes = 0;
+    let completedSessions = 0;
+    const activeDaysSet = new Set();
+
+    weekSchedules.forEach((item) => {
+      if (item.status === 'Completed') {
+        completedSessions += 1;
+        totalMinutes += item.durationMinutes || 10;
+        activeDaysSet.add(item.scheduledDate);
+      }
+    });
+
+    const activeDays = activeDaysSet.size;
+    const goalPercentage = Math.min(100, Math.round((activeDays / 7) * 100));
+
+    // Get today's plan
+    const todayStr = getTodayDateString();
+    const todaySchedules = await DailySchedule.find({ scheduledDate: todayStr }).sort({ order: 1 });
+    const todayCompletedCount = todaySchedules.filter(s => s.status === 'Completed').length;
+
+    res.json({
+      success: true,
+      data: {
+        thisWeek: {
+          minutes: totalMinutes,
+          sessions: completedSessions,
+          activeDays,
+          totalDays: 7,
+          goalPercentage
+        },
+        todayPlan: {
+          total: todaySchedules.length,
+          completedCount: todayCompletedCount,
+          items: todaySchedules
+        },
+        insights: {
+          biometricHeadline: "You slept less than usual last night.",
+          recommendedCategory: "Today's recommendation",
+          recommendedTitle: "Gentle Yoga + Relaxing Breath",
+          recommendationIcon: "moon"
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getSchedulesByDate,
   addSchedule,
   toggleScheduleStatus,
   deleteSchedule,
-  getMonthStats
+  getMonthStats,
+  getWeekStats
 };
