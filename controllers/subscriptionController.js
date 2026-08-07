@@ -71,9 +71,131 @@ const deleteCoupon = async (req, res) => {
   }
 };
 
+const getPlans = async (req, res) => {
+  try {
+    const plans = [
+      {
+        id: 'starter',
+        name: 'Starter Free',
+        badge: 'BASIC',
+        price: '$0',
+        priceNumber: 0,
+        period: 'Forever',
+        popular: false,
+        description: 'Perfect for beginners starting their yoga journey',
+        features: [
+          'Access to basic Asana library',
+          'Standard 3-min Breathing exercises',
+          'Daily Wellness Schedule tracking',
+          'Community support'
+        ]
+      },
+      {
+        id: 'monthly',
+        name: 'Monthly Pro',
+        badge: 'MOST FLEXIBLE',
+        price: '$14.99',
+        priceNumber: 14.99,
+        period: 'per month',
+        popular: false,
+        description: 'Full access with monthly billing flexibility',
+        features: [
+          'Unlimited AI Flow & Pose Generator',
+          'All 30-Day Goal Programs (Strength, Mobility, Mind)',
+          'Smart Apple Watch & Wear telemetry',
+          'HD Video Downloads for offline practice',
+          'Priority Kundalini & Breathing Library'
+        ]
+      },
+      {
+        id: 'annual',
+        name: 'Annual Pro',
+        badge: 'SAVE 20%',
+        price: '$149.00',
+        priceNumber: 149.00,
+        period: 'per year',
+        popular: true,
+        description: 'Best value for dedicated yogis with maximum savings',
+        features: [
+          'Everything in Monthly Pro',
+          '2 Months FREE (Save $30+ yearly)',
+          'Live Streamed Masterclasses with Yogis',
+          'Family Sharing (Up to 4 profiles)',
+          '1-on-1 Personalized Flow Consultations'
+        ]
+      }
+    ];
+
+    res.json({ success: true, count: plans.length, data: plans });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const applyCoupon = async (req, res) => {
+  try {
+    const { code } = req.body;
+    if (!code) {
+      return res.status(400).json({ success: false, message: 'Please enter a promo code' });
+    }
+
+    const cleanCode = code.trim().toUpperCase();
+    const coupon = await Coupon.findOne({ code: cleanCode, status: 'Active' });
+
+    if (!coupon) {
+      // Check default fallback mock coupon
+      if (cleanCode === 'YOGA20' || cleanCode === 'WELCOME20') {
+        return res.json({
+          success: true,
+          data: {
+            code: cleanCode,
+            discountPercent: 20,
+            message: '20% OFF coupon applied successfully!'
+          }
+        });
+      }
+      return res.status(404).json({ success: false, message: 'Invalid or expired promo coupon code' });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        code: coupon.code,
+        discountPercent: coupon.discountPercent || 20,
+        message: `${coupon.discountPercent}% OFF coupon applied successfully!`
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const subscribeUser = async (req, res) => {
+  try {
+    const { planId, couponCode, paymentMethod } = req.body;
+
+    res.json({
+      success: true,
+      message: 'Subscription activated successfully!',
+      subscription: {
+        planId: planId || 'annual',
+        status: 'Active',
+        paymentMethod: paymentMethod || 'Card',
+        startDate: new Date().toISOString(),
+        couponApplied: couponCode || null
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getSubscriptionsSummary,
   getCoupons,
   createCoupon,
-  deleteCoupon
+  deleteCoupon,
+  getPlans,
+  applyCoupon,
+  subscribeUser
 };

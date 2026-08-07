@@ -4,10 +4,17 @@ const {
   getSubscriptionsSummary,
   getCoupons,
   createCoupon,
-  deleteCoupon
+  deleteCoupon,
+  getPlans,
+  applyCoupon,
+  subscribeUser
 } = require('../controllers/subscriptionController');
 
 router.get('/summary', getSubscriptionsSummary);
+router.get('/plans', getPlans);
+router.post('/apply-coupon', applyCoupon);
+router.post('/subscribe', subscribeUser);
+
 router.route('/coupons')
   .get(getCoupons)
   .post(createCoupon);
