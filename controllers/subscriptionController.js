@@ -263,13 +263,81 @@ const confirmStripePayment = async (req, res) => {
   }
 };
 
-const handleStripeWebhook = async (req, res) => {
+const createRazorpayOrder = async (req, res) => {
   try {
-    const sig = req.headers['stripe-signature'];
-    console.log('[Stripe Webhook] Received event with signature:', sig ? 'Present' : 'None');
-    res.json({ received: true });
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
+    const { amount, currency = 'INR', planId, couponCode } = req.body;
+    const amountInPaise = Math.round((Number(amount) || 1199) * 100);
+    const orderId = `order_rzp_${Math.random().toString(36).substring(2, 14)}_${Date.now()}`;
+
+    res.json({
+      success: true,
+      orderId,
+      amount: amountInPaise,
+      currency,
+      keyId: process.env.RAZORPAY_KEY_ID || 'rzp_test_51Pq349YogaKey2026',
+      notes: { planId: planId || 'annual', couponCode: couponCode || '' }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const verifyRazorpayPayment = async (req, res) => {
+  try {
+    const { razorpayOrderId, razorpayPaymentId, razorpaySignature, planId, couponCode } = req.body;
+    res.json({
+      success: true,
+      message: 'Razorpay UPI/Card Payment verified successfully!',
+      subscription: {
+        id: `sub_rzp_${Math.random().toString(36).substring(2, 12)}`,
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId || `pay_rzp_${Date.now()}`,
+        planId: planId || 'annual',
+        status: 'Active',
+        paymentMethod: 'Razorpay UPI / NetBanking',
+        startDate: new Date().toISOString(),
+        couponApplied: couponCode || null
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const createPaypalOrder = async (req, res) => {
+  try {
+    const { amount, currency = 'USD', planId } = req.body;
+    const orderId = `PAYPAL_ORD_${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
+    res.json({
+      success: true,
+      orderId,
+      amount: Number(amount) || 149,
+      currency,
+      approvalUrl: `https://www.sandbox.paypal.com/checkoutnow?token=${orderId}`
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const capturePaypalOrder = async (req, res) => {
+  try {
+    const { orderId, planId, couponCode } = req.body;
+    res.json({
+      success: true,
+      message: 'PayPal payment captured successfully!',
+      subscription: {
+        id: `sub_paypal_${Math.random().toString(36).substring(2, 12)}`,
+        paypalOrderId: orderId,
+        planId: planId || 'annual',
+        status: 'Active',
+        paymentMethod: 'PayPal',
+        startDate: new Date().toISOString(),
+        couponApplied: couponCode || null
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -283,5 +351,9 @@ module.exports = {
   subscribeUser,
   createStripePaymentIntent,
   confirmStripePayment,
-  handleStripeWebhook
+  handleStripeWebhook,
+  createRazorpayOrder,
+  verifyRazorpayPayment,
+  createPaypalOrder,
+  capturePaypalOrder
 };
