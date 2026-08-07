@@ -11,19 +11,31 @@ const getVideosByFeeling = async (req, res) => {
     const { feeling, focusArea } = req.query;
     let query = { isActive: true };
 
-    if (feeling) {
-      query.feeling = new RegExp(feeling, 'i');
+    if (feeling && feeling !== 'undefined' && feeling !== 'null' && feeling !== 'Not available') {
+      const safeFeeling = feeling.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      query.feeling = new RegExp(safeFeeling, 'i');
     }
-    if (focusArea) {
+
+    if (focusArea && focusArea !== 'undefined' && focusArea !== 'null' && focusArea !== 'Not available') {
+      const parts = focusArea.split('/').map(p => p.trim()).filter(Boolean);
+      const patterns = [
+        focusArea.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+        ...parts.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      ];
+
       query.$or = [
-        { focusArea: new RegExp(focusArea, 'i') },
-        { focusArea: 'General' }
+        ...patterns.map(pat => ({ focusArea: new RegExp(pat, 'i') })),
+        { focusArea: 'General' },
+        { focusArea: { $exists: false } }
       ];
     }
 
+    // Strictly fetch videos matching the selected feeling and focus area
     const videos = await FeelingVideo.find(query).sort({ createdAt: -1 });
+
     res.json({ success: true, data: videos });
   } catch (error) {
+    console.error('getVideosByFeeling Error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -72,7 +84,7 @@ const uploadFeelingVideo = async (req, res) => {
 
     await video.save();
 
-    // Broadcast Real-time event to Flutter / Web clients via Socket.io
+    // Broadcast Real-time event to clients via Socket.io
     const io = getSocketIO();
     if (io) {
       io.emit('video_uploaded', video);

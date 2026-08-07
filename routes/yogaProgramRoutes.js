@@ -17,6 +17,15 @@ const programUpload = uploadMedia.fields([
 
 router.get('/', getYogaPrograms);
 router.get('/:id', getYogaProgramById);
+router.post('/upload', uploadMedia.single('media'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'No file uploaded' });
+  }
+  const protocol = req.protocol || 'http';
+  const host = req.get('host') || 'localhost:5000';
+  const fileUrl = `${protocol}://${host}/uploads/media/${req.file.filename}`;
+  return res.json({ success: true, url: fileUrl });
+});
 router.post('/', programUpload, createYogaProgram);
 router.put('/:id', programUpload, updateYogaProgram);
 router.delete('/:id', deleteYogaProgram);
