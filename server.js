@@ -42,6 +42,7 @@ app.use('/api/exercises', require('./routes/exerciseRoutes'));
 app.use('/api/recommendations', require('./routes/recommendationRoutes'));
 app.use('/api/ai-generator', require('./routes/aiGeneratorRoutes'));
 app.use('/api/practices', require('./routes/practiceRoutes'));
+app.use('/api/subscription', require('./routes/subscriptionRoutes'));
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 app.use('/api/health', require('./routes/healthRoutes'));
 app.use('/api/settings', require('./routes/settingRoutes'));
