@@ -263,6 +263,16 @@ const confirmStripePayment = async (req, res) => {
   }
 };
 
+const handleStripeWebhook = async (req, res) => {
+  try {
+    const sig = req.headers['stripe-signature'];
+    console.log('[Stripe Webhook] Received event with signature:', sig ? 'Present' : 'None');
+    res.json({ received: true });
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+};
+
 const createRazorpayOrder = async (req, res) => {
   try {
     const { amount, currency = 'INR', planId, couponCode } = req.body;
