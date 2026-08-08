@@ -55,6 +55,7 @@ const getSchedulesByDate = async (req, res) => {
  */
 const addSchedule = async (req, res) => {
   try {
+    const body = req.body || {};
     const {
       title,
       category,
@@ -65,7 +66,7 @@ const addSchedule = async (req, res) => {
       bgImageUrlCustom,
       frameDesignUrlCustom,
       bgMusicUrlCustom
-    } = req.body;
+    } = body;
 
     const files = req.files || {};
     const targetDate = scheduledDate || getTodayDateString();
@@ -74,16 +75,27 @@ const addSchedule = async (req, res) => {
     const frameDesignUrl = buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
     const bgMusicUrl = buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null) || bgMusicUrlCustom || 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
 
-    const count = await DailySchedule.countDocuments({ scheduledDate: targetDate });
+    // Safely drop legacy Mongo unique index if present
+    try {
+      await DailySchedule.collection.dropIndex('userId_1_date_1');
+    } catch (dropErr) {
+      // Ignore error if index doesn't exist
+    }
+
+    const count = await DailySchedule.countDocuments({ scheduledDate: targetDate }).catch(() => 0);
+
+    const ALLOWED_CATEGORIES = ['Breathing', 'Yoga', 'Meditation', 'Relaxation', 'Sleep'];
+    const sanitizedCategory = ALLOWED_CATEGORIES.includes(category) ? category : 'Breathing';
 
     const newSchedule = new DailySchedule({
       title: title || 'Mindful Routine',
-      category: category || 'Breathing',
+      category: sanitizedCategory,
       scheduledDate: targetDate,
+      date: `${targetDate}_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
       scheduledTime: scheduledTime || '07:00 AM',
       durationMinutes: parseInt(durationMinutes) || 10,
       status: 'Pending',
-      icon: icon || (category === 'Yoga' ? 'yoga' : category === 'Meditation' ? 'brain' : category === 'Sleep' ? 'moon' : 'sun'),
+      icon: icon || (sanitizedCategory === 'Yoga' ? 'yoga' : sanitizedCategory === 'Meditation' ? 'brain' : sanitizedCategory === 'Sleep' ? 'moon' : 'sun'),
       bgImageUrl,
       frameDesignUrl,
       bgMusicUrl,
@@ -98,7 +110,8 @@ const addSchedule = async (req, res) => {
       data: newSchedule
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error('[AddSchedule Error]', error);
+    res.status(500).json({ success: false, message: error.message || 'Server error creating schedule' });
   }
 };
 

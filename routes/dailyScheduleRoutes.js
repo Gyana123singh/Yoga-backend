@@ -17,8 +17,15 @@ const scheduleUpload = uploadMedia.fields([
   { name: 'voiceGuidance', maxCount: 1 }
 ]);
 
+const optionalUpload = (req, res, next) => {
+  if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
+    return scheduleUpload(req, res, next);
+  }
+  next();
+};
+
 router.get('/', getSchedulesByDate);
-router.post('/', scheduleUpload, addSchedule);
+router.post('/', optionalUpload, addSchedule);
 router.put('/:id/toggle-complete', toggleScheduleStatus);
 router.delete('/:id', deleteSchedule);
 router.get('/month-stats', getMonthStats);

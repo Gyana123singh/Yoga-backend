@@ -8,6 +8,7 @@ const dailyScheduleSchema = new mongoose.Schema({
     default: 'Breathing'
   },
   scheduledDate: { type: String, required: true }, // "YYYY-MM-DD" format, e.g. "2026-07-04"
+  date: { type: String }, // Backwards compatibility for legacy unique index
   scheduledTime: { type: String, default: '07:15 AM' },
   durationMinutes: { type: Number, default: 10 },
   status: { type: String, enum: ['Pending', 'Completed', 'Missed'], default: 'Pending' },
