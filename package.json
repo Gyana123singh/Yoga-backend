@@ -11,7 +11,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^3.1.14",
     "socket.io": "^4.8.1",
-    "stripe": "^22.4.0"
+    "razorpay": "^2.9.6"
   },
   "name": "backend",
   "version": "1.0.0",

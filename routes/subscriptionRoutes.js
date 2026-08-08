@@ -8,11 +8,9 @@ const {
   getPlans,
   applyCoupon,
   subscribeUser,
-  createStripePaymentIntent,
-  confirmStripePayment,
-  handleStripeWebhook,
   createRazorpayOrder,
   verifyRazorpayPayment,
+  handleRazorpayWebhook,
   createPaypalOrder,
   capturePaypalOrder
 } = require('../controllers/subscriptionController');
@@ -22,14 +20,10 @@ router.get('/plans', getPlans);
 router.post('/apply-coupon', applyCoupon);
 router.post('/subscribe', subscribeUser);
 
-// Stripe Payment Gateway Routes
-router.post('/create-payment-intent', createStripePaymentIntent);
-router.post('/confirm-payment', confirmStripePayment);
-router.post('/webhook', handleStripeWebhook);
-
-// Razorpay Gateway Routes (UPI, NetBanking, Cards)
+// Razorpay Payment Gateway Routes (UPI, Cards, NetBanking, Wallets)
 router.post('/create-razorpay-order', createRazorpayOrder);
 router.post('/verify-razorpay-signature', verifyRazorpayPayment);
+router.post('/razorpay-webhook', handleRazorpayWebhook);
 
 // PayPal Gateway Routes
 router.post('/create-paypal-order', createPaypalOrder);

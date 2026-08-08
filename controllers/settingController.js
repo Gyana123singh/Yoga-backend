@@ -3,7 +3,7 @@ const Setting = require('../models/Setting');
 const DEFAULT_SETTINGS = {
   siteName: 'AURA Yoga & Mindfulness Platform',
   aiModelVersion: 'v2.4-NeuralFlow',
-  stripeKeyConfig: 'pk_live_51M**********************',
+  razorpayKeyConfig: 'rzp_test_51Pq349YogaKey2026',
   healthKitEnabled: true,
   telemetrySyncInterval: '15 mins',
   maxAiTokensPerUser: 50000,

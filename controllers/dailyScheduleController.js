@@ -115,6 +115,36 @@ const addSchedule = async (req, res) => {
   }
 };
 
+const mongoose = require('mongoose');
+
+/**
+ * Helper to safely find schedule by Mongo ObjectId, custom ID, or numeric order
+ */
+const findScheduleByIdOrOrder = async (id) => {
+  if (!id) return null;
+
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    const found = await DailySchedule.findById(id);
+    if (found) return found;
+  }
+
+  const queryOr = [{ date: id }];
+  if (!isNaN(id)) {
+    queryOr.push({ order: Number(id) });
+  }
+
+  let found = await DailySchedule.findOne({ $or: queryOr });
+  if (found) return found;
+
+  if (!isNaN(id)) {
+    const all = await DailySchedule.find().sort({ order: 1, createdAt: 1 });
+    const idx = Math.max(0, parseInt(id, 10) - 1);
+    if (all[idx]) return all[idx];
+  }
+
+  return null;
+};
+
 /**
  * @desc    Toggle Schedule Completion Status (Pending <-> Completed)
  * @route   PUT /api/daily-schedule/:id/toggle-complete
@@ -122,7 +152,7 @@ const addSchedule = async (req, res) => {
  */
 const toggleScheduleStatus = async (req, res) => {
   try {
-    const schedule = await DailySchedule.findById(req.params.id);
+    const schedule = await findScheduleByIdOrOrder(req.params.id);
     if (!schedule) {
       return res.status(404).json({ success: false, message: 'Schedule item not found' });
     }
@@ -136,6 +166,7 @@ const toggleScheduleStatus = async (req, res) => {
       data: schedule
     });
   } catch (error) {
+    console.error('[toggleScheduleStatus Error]', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -147,12 +178,14 @@ const toggleScheduleStatus = async (req, res) => {
  */
 const deleteSchedule = async (req, res) => {
   try {
-    const deleted = await DailySchedule.findByIdAndDelete(req.params.id);
-    if (!deleted) {
+    const schedule = await findScheduleByIdOrOrder(req.params.id);
+    if (!schedule) {
       return res.status(404).json({ success: false, message: 'Schedule item not found' });
     }
+    await DailySchedule.findByIdAndDelete(schedule._id);
     res.json({ success: true, message: 'Routine deleted from calendar' });
   } catch (error) {
+    console.error('[deleteSchedule Error]', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
