@@ -36,8 +36,8 @@ const getDailyNeedsConfig = async (req, res) => {
  */
 const createFeeling = async (req, res) => {
   try {
-    const { name, emoji, description, order, isActive } = req.body;
-    const feeling = new Feeling({ name, emoji, description, order, isActive });
+    const { name, emoji, description, relatedDurations, order, isActive } = req.body;
+    const feeling = new Feeling({ name, emoji, description, relatedDurations, order, isActive });
     await feeling.save();
     res.status(201).json({ success: true, data: feeling });
   } catch (error) {
@@ -104,8 +104,28 @@ const deleteFocusArea = async (req, res) => {
  */
 const createDuration = async (req, res) => {
   try {
-    const { label, minutes, order, isActive } = req.body;
-    const duration = new DurationOption({ label, minutes, order, isActive });
+    const { label, minutes, selectedMinutes, relatedFeelings, order, isActive } = req.body;
+
+    if (Array.isArray(selectedMinutes) && selectedMinutes.length > 0) {
+      const results = [];
+      for (const min of selectedMinutes) {
+        const numMin = Number(min);
+        const lbl = `${numMin} min`;
+        let duration = await DurationOption.findOne({ minutes: numMin });
+        if (duration) {
+          duration.relatedFeelings = Array.from(new Set([...(duration.relatedFeelings || []), ...(relatedFeelings || [])]));
+          await duration.save();
+          results.push(duration);
+        } else {
+          duration = new DurationOption({ label: lbl, minutes: numMin, relatedFeelings: relatedFeelings || [], order: order || 0, isActive });
+          await duration.save();
+          results.push(duration);
+        }
+      }
+      return res.status(201).json({ success: true, data: results[0], all: results });
+    }
+
+    const duration = new DurationOption({ label: label || `${minutes} min`, minutes: Number(minutes), relatedFeelings, order, isActive });
     await duration.save();
     res.status(201).json({ success: true, data: duration });
   } catch (error) {
