@@ -50,14 +50,14 @@ const getQuickPracticeById = async (req, res) => {
   }
 };
 
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
+
 /**
- * Helper to construct local static file URL
+ * Helper to construct media URL (Multer local + Cloudinary)
  */
-const buildFileUrl = (req, file) => {
+const buildFileUrl = async (req, file) => {
   if (!file) return null;
-  const protocol = req.protocol || 'http';
-  const host = req.get('host') || 'localhost:5000';
-  return `${protocol}://${host}/uploads/media/${file.filename}`;
+  return await getMediaUrl(req, file, 'media');
 };
 
 /**
@@ -87,10 +87,10 @@ const createQuickPractice = async (req, res) => {
 
     const files = req.files || {};
 
-    const bgImageUrl = buildFileUrl(req, files.bgImage ? files.bgImage[0] : null) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
-    const frameDesignUrl = buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
-    const bgMusicUrl = buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null) || bgMusicUrlCustom || '';
-    const voiceGuidanceUrl = buildFileUrl(req, files.voiceGuidance ? files.voiceGuidance[0] : null) || voiceGuidanceUrlCustom || '';
+    const bgImageUrl = (await buildFileUrl(req, files.bgImage ? files.bgImage[0] : null)) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
+    const frameDesignUrl = (await buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null)) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
+    const bgMusicUrl = (await buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null)) || bgMusicUrlCustom || '';
+    const voiceGuidanceUrl = (await buildFileUrl(req, files.voiceGuidance ? files.voiceGuidance[0] : null)) || voiceGuidanceUrlCustom || '';
 
     let parsedPhases = [];
     if (phases) {
@@ -165,25 +165,25 @@ const updateQuickPractice = async (req, res) => {
     const updateData = { ...req.body };
 
     if (files.bgImage) {
-      updateData.bgImageUrl = buildFileUrl(req, files.bgImage[0]);
+      updateData.bgImageUrl = await buildFileUrl(req, files.bgImage[0]);
     } else if (req.body.bgImageUrlCustom) {
       updateData.bgImageUrl = req.body.bgImageUrlCustom;
     }
 
     if (files.frameDesign) {
-      updateData.frameDesignUrl = buildFileUrl(req, files.frameDesign[0]);
+      updateData.frameDesignUrl = await buildFileUrl(req, files.frameDesign[0]);
     } else if (req.body.frameDesignUrlCustom) {
       updateData.frameDesignUrl = req.body.frameDesignUrlCustom;
     }
 
     if (files.bgMusic) {
-      updateData.bgMusicUrl = buildFileUrl(req, files.bgMusic[0]);
+      updateData.bgMusicUrl = await buildFileUrl(req, files.bgMusic[0]);
     } else if (req.body.bgMusicUrlCustom) {
       updateData.bgMusicUrl = req.body.bgMusicUrlCustom;
     }
 
     if (files.voiceGuidance) {
-      updateData.voiceGuidanceUrl = buildFileUrl(req, files.voiceGuidance[0]);
+      updateData.voiceGuidanceUrl = await buildFileUrl(req, files.voiceGuidance[0]);
     } else if (req.body.voiceGuidanceUrlCustom) {
       updateData.voiceGuidanceUrl = req.body.voiceGuidanceUrlCustom;
     }

@@ -1,5 +1,6 @@
 const FeelingVideo = require('../models/FeelingVideo');
 const { getSocketIO } = require('../config/socket');
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
 
 /**
  * @desc    Get videos by Feeling and Focus Area (for Customer Active Practice Player)
@@ -52,10 +53,7 @@ const uploadFeelingVideo = async (req, res) => {
     let videoUrl = videoUrlCustom || '';
 
     if (req.file) {
-      // Served statically from /uploads/videos/
-      const protocol = req.protocol || 'http';
-      const host = req.get('host') || 'localhost:5000';
-      videoUrl = `${protocol}://${host}/uploads/videos/${req.file.filename}`;
+      videoUrl = await getMediaUrl(req, req.file, 'videos');
     }
 
     if (!videoUrl) {
