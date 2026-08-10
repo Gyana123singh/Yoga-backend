@@ -1,13 +1,12 @@
 const Breathing = require('../models/Breathing');
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
 
 /**
- * Helper to build static URL for uploaded files
+ * Helper to build static URL for uploaded files (Multer local + Cloudinary)
  */
-const buildFileUrl = (req, file) => {
+const buildFileUrl = async (req, file) => {
   if (!file) return null;
-  const protocol = req.protocol || 'http';
-  const host = req.get('host') || 'localhost:5000';
-  return `${protocol}://${host}/uploads/media/${file.filename}`;
+  return await getMediaUrl(req, file, 'media');
 };
 
 /**
@@ -93,11 +92,11 @@ const createBreathingTechnique = async (req, res) => {
       bgMusicUrlCustom
     } = req.body;
 
-    const heroImageUrl = buildFileUrl(req, files.heroImage ? files.heroImage[0] : null) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
-    const demoVideoUrl = buildFileUrl(req, files.demoVideo ? files.demoVideo[0] : null) || demoVideoUrlCustom || 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4';
-    const bgImageUrl = buildFileUrl(req, files.bgImage ? files.bgImage[0] : null) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
-    const frameDesignUrl = buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
-    const bgMusicUrl = buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null) || bgMusicUrlCustom || 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
+    const heroImageUrl = (await buildFileUrl(req, files.heroImage ? files.heroImage[0] : null)) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
+    const demoVideoUrl = (await buildFileUrl(req, files.demoVideo ? files.demoVideo[0] : null)) || demoVideoUrlCustom || 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4';
+    const bgImageUrl = (await buildFileUrl(req, files.bgImage ? files.bgImage[0] : null)) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
+    const frameDesignUrl = (await buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null)) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
+    const bgMusicUrl = (await buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null)) || bgMusicUrlCustom || 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
 
     const count = await Breathing.countDocuments();
 
@@ -160,19 +159,19 @@ const updateBreathingTechnique = async (req, res) => {
     const files = req.files || {};
     const updateData = { ...req.body };
 
-    if (files.heroImage) updateData.heroImageUrl = buildFileUrl(req, files.heroImage[0]);
+    if (files.heroImage) updateData.heroImageUrl = await buildFileUrl(req, files.heroImage[0]);
     else if (req.body.heroImageUrlCustom) updateData.heroImageUrl = req.body.heroImageUrlCustom;
 
-    if (files.demoVideo) updateData.demoVideoUrl = buildFileUrl(req, files.demoVideo[0]);
+    if (files.demoVideo) updateData.demoVideoUrl = await buildFileUrl(req, files.demoVideo[0]);
     else if (req.body.demoVideoUrlCustom) updateData.demoVideoUrl = req.body.demoVideoUrlCustom;
 
-    if (files.bgImage) updateData.bgImageUrl = buildFileUrl(req, files.bgImage[0]);
+    if (files.bgImage) updateData.bgImageUrl = await buildFileUrl(req, files.bgImage[0]);
     else if (req.body.bgImageUrlCustom) updateData.bgImageUrl = req.body.bgImageUrlCustom;
 
-    if (files.frameDesign) updateData.frameDesignUrl = buildFileUrl(req, files.frameDesign[0]);
+    if (files.frameDesign) updateData.frameDesignUrl = await buildFileUrl(req, files.frameDesign[0]);
     else if (req.body.frameDesignUrlCustom) updateData.frameDesignUrl = req.body.frameDesignUrlCustom;
 
-    if (files.bgMusic) updateData.bgMusicUrl = buildFileUrl(req, files.bgMusic[0]);
+    if (files.bgMusic) updateData.bgMusicUrl = await buildFileUrl(req, files.bgMusic[0]);
     else if (req.body.bgMusicUrlCustom) updateData.bgMusicUrl = req.body.bgMusicUrlCustom;
 
     const updated = await Breathing.findByIdAndUpdate(

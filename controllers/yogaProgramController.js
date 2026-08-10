@@ -1,5 +1,6 @@
 const YogaProgram = require('../models/YogaProgram');
 const UserPracticeLog = require('../models/UserPracticeLog');
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
 
 /**
  * @desc    Get all active Goal-Based Yoga Programs
@@ -44,13 +45,11 @@ const getYogaProgramById = async (req, res) => {
 };
 
 /**
- * Helper to build static URL for uploaded files
+ * Helper to build URL for uploaded files (Multer local + Cloudinary)
  */
-const buildFileUrl = (req, file) => {
+const buildFileUrl = async (req, file) => {
   if (!file) return null;
-  const protocol = req.protocol || 'http';
-  const host = req.get('host') || 'localhost:5000';
-  return `${protocol}://${host}/uploads/media/${file.filename}`;
+  return await getMediaUrl(req, file, 'media');
 };
 
 /**
@@ -75,7 +74,7 @@ const createYogaProgram = async (req, res) => {
     } = req.body;
 
     const files = req.files || {};
-    const heroImageUrl = buildFileUrl(req, files.heroImage ? files.heroImage[0] : null) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
+    const heroImageUrl = (await buildFileUrl(req, files.heroImage ? files.heroImage[0] : null)) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
 
     let parsedTags = [];
     if (tags) {
@@ -136,7 +135,7 @@ const updateYogaProgram = async (req, res) => {
     const updateData = { ...req.body };
 
     if (files.heroImage) {
-      updateData.heroImageUrl = buildFileUrl(req, files.heroImage[0]);
+      updateData.heroImageUrl = await buildFileUrl(req, files.heroImage[0]);
     } else if (req.body.heroImageUrlCustom) {
       updateData.heroImageUrl = req.body.heroImageUrlCustom;
     }
