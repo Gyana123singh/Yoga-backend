@@ -53,7 +53,10 @@ const uploadFeelingVideo = async (req, res) => {
     let videoUrl = videoUrlCustom || '';
 
     if (req.file) {
-      videoUrl = await getMediaUrl(req, req.file, 'videos');
+      // Served statically from /uploads/videos/
+      const protocol = req.protocol || 'http';
+      const host = req.get('host') || 'localhost:5000';
+      videoUrl = `${protocol}://${host}/uploads/videos/${req.file.filename}`;
     }
 
     if (!videoUrl) {

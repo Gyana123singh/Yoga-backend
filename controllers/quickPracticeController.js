@@ -57,7 +57,9 @@ const { getMediaUrl } = require('../utils/cloudinaryHelper');
  */
 const buildFileUrl = async (req, file) => {
   if (!file) return null;
-  return await getMediaUrl(req, file, 'media');
+  const protocol = req.protocol || 'http';
+  const host = req.get('host') || 'localhost:5000';
+  return `${protocol}://${host}/uploads/media/${file.filename}`;
 };
 
 /**
