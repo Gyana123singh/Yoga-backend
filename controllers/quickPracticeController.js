@@ -55,9 +55,13 @@ const getQuickPracticeById = async (req, res) => {
  */
 const buildFileUrl = (req, file) => {
   if (!file) return null;
-  const protocol = req.protocol || 'http';
-  const host = req.get('host') || 'localhost:5000';
-  return `${protocol}://${host}/uploads/media/${file.filename}`;
+  const protocol = req.protocol || 'https';
+  let host = req.get('host') || 'apiyoga.hirehand.co.in';
+  if (host.includes('localhost') || host.includes('127.0.0.1')) {
+    host = process.env.PUBLIC_HOST || 'apiyoga.hirehand.co.in';
+  }
+  const scheme = host.includes('localhost') ? 'http' : 'https';
+  return `${scheme}://${host}/uploads/media/${file.filename}`;
 };
 
 /**

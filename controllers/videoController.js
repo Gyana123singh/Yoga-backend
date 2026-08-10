@@ -53,9 +53,12 @@ const uploadFeelingVideo = async (req, res) => {
 
     if (req.file) {
       // Served statically from /uploads/videos/
-      const protocol = req.protocol || 'http';
-      const host = req.get('host') || 'localhost:5000';
-      videoUrl = `${protocol}://${host}/uploads/videos/${req.file.filename}`;
+      let host = req.get('host') || 'apiyoga.hirehand.co.in';
+      if (host.includes('localhost') || host.includes('127.0.0.1')) {
+        host = process.env.PUBLIC_HOST || 'apiyoga.hirehand.co.in';
+      }
+      const scheme = host.includes('localhost') ? 'http' : 'https';
+      videoUrl = `${scheme}://${host}/uploads/videos/${req.file.filename}`;
     }
 
     if (!videoUrl) {
