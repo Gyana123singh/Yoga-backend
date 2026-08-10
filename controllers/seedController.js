@@ -69,8 +69,6 @@ const runSeeder = async () => {
   await DailySchedule.insertMany(MOCK_DAILY_SCHEDULES);
   await Exercise.insertMany(MOCK_EXERCISES);
   await Ticket.insertMany(MOCK_TICKETS);
-  await DailySchedule.insertMany(MOCK_DAILY_SCHEDULES);
-  await Exercise.insertMany(MOCK_EXERCISES);
 
   await Setting.create({
     siteName: 'AURA Yoga & Mindfulness Platform',
