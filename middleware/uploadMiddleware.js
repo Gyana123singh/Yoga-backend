@@ -1,35 +1,10 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 
-// Ensure local uploads directories exist
-const videoDir = path.join(__dirname, '../uploads/videos');
-const mediaDir = path.join(__dirname, '../uploads/media');
+// Multer Memory Storage (No files stored on local disk, direct Cloudinary stream)
+const memoryStorage = multer.memoryStorage();
 
-if (!fs.existsSync(videoDir)) fs.mkdirSync(videoDir, { recursive: true });
-if (!fs.existsSync(mediaDir)) fs.mkdirSync(mediaDir, { recursive: true });
-
-// Multer Disk Storage Config for Videos
-const videoStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, videoDir),
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `video-${uniqueSuffix}${ext}`);
-  }
-});
-
-// Multer Disk Storage Config for General Media (Images, Frame SVGs, Music Audios)
-const mediaStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, mediaDir),
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `media-${file.fieldname}-${uniqueSuffix}${ext}`);
-  }
-});
-
-// Filters
+// Video filter
 const videoFilter = (req, file, cb) => {
   const allowedTypes = /mp4|webm|mov|mkv|avi/;
   const extMatch = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -40,6 +15,7 @@ const videoFilter = (req, file, cb) => {
   }
 };
 
+// Media filter (Images, Audio, SVG)
 const mediaFilter = (req, file, cb) => {
   const allowedTypes = /jpg|jpeg|png|webp|svg|gif|mp3|wav|ogg|m4a|aac|mp4|webm/;
   const extMatch = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -51,18 +27,18 @@ const mediaFilter = (req, file, cb) => {
 };
 
 const uploadVideo = multer({
-  storage: videoStorage,
+  storage: memoryStorage,
   limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: videoFilter
 });
 
 const uploadMedia = multer({
-  storage: mediaStorage,
+  storage: memoryStorage,
   limits: { fileSize: 200 * 1024 * 1024 },
   fileFilter: mediaFilter
 });
 
-// Multi-field upload middleware for Quick Practice (bgImage, frameDesign, bgMusic, voiceGuidance)
+// Multi-field upload middleware for Quick Practice
 const uploadQuickPracticeMedia = uploadMedia.fields([
   { name: 'bgImage', maxCount: 1 },
   { name: 'frameDesign', maxCount: 1 },
