@@ -14,7 +14,8 @@ const exerciseUpload = uploadMedia.fields([
   { name: 'demoVideo', maxCount: 1 },
   { name: 'bgImage', maxCount: 1 },
   { name: 'frameDesign', maxCount: 1 },
-  { name: 'bgMusic', maxCount: 1 }
+  { name: 'bgMusic', maxCount: 1 },
+  { name: 'voiceGuidance', maxCount: 1 }
 ]);
 
 router.get('/', getExercises);

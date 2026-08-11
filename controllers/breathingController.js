@@ -89,7 +89,8 @@ const createBreathingTechnique = async (req, res) => {
       demoVideoUrlCustom,
       bgImageUrlCustom,
       frameDesignUrlCustom,
-      bgMusicUrlCustom
+      bgMusicUrlCustom,
+      voiceGuidanceUrlCustom
     } = req.body;
 
     const heroImageUrl = (await buildFileUrl(req, files.heroImage ? files.heroImage[0] : null)) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
@@ -97,6 +98,7 @@ const createBreathingTechnique = async (req, res) => {
     const bgImageUrl = (await buildFileUrl(req, files.bgImage ? files.bgImage[0] : null)) || bgImageUrlCustom || 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
     const frameDesignUrl = (await buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null)) || frameDesignUrlCustom || 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
     const bgMusicUrl = (await buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null)) || bgMusicUrlCustom || 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
+    const voiceGuidanceUrl = (await buildFileUrl(req, files.voiceGuidance ? files.voiceGuidance[0] : null)) || voiceGuidanceUrlCustom || '';
 
     const count = await Breathing.countDocuments();
 
@@ -123,6 +125,7 @@ const createBreathingTechnique = async (req, res) => {
       bgImageUrl,
       frameDesignUrl,
       bgMusicUrl,
+      voiceGuidanceUrl,
       order: count + 1,
       isActive: true
     });
@@ -173,6 +176,9 @@ const updateBreathingTechnique = async (req, res) => {
 
     if (files.bgMusic) updateData.bgMusicUrl = await buildFileUrl(req, files.bgMusic[0]);
     else if (req.body.bgMusicUrlCustom) updateData.bgMusicUrl = req.body.bgMusicUrlCustom;
+
+    if (files.voiceGuidance) updateData.voiceGuidanceUrl = await buildFileUrl(req, files.voiceGuidance[0]);
+    else if (req.body.voiceGuidanceUrlCustom !== undefined) updateData.voiceGuidanceUrl = req.body.voiceGuidanceUrlCustom;
 
     const updated = await Breathing.findByIdAndUpdate(
       req.params.id,
