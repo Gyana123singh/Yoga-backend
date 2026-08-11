@@ -4,7 +4,6 @@ const dailyScheduleSchema = new mongoose.Schema({
   title: { type: String, required: true }, // e.g. "Morning Mindful Breath", "Core Yoga Flow", "Sleep Journey Practice"
   category: {
     type: String,
-    enum: ['Breathing', 'Yoga', 'Meditation', 'Relaxation', 'Sleep'],
     default: 'Breathing'
   },
   scheduledDate: { type: String, required: true }, // "YYYY-MM-DD" format, e.g. "2026-07-04"

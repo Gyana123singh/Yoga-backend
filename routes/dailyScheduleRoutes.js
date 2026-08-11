@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {
+  getCalendarCategories,
+  addOrUpdateCalendarCategory,
+  deleteCalendarCategory,
   getSchedulesByDate,
   addSchedule,
   toggleScheduleStatus,
@@ -24,6 +27,12 @@ const optionalUpload = (req, res, next) => {
   next();
 };
 
+// Category Management Routes
+router.get('/categories', getCalendarCategories);
+router.post('/categories', optionalUpload, addOrUpdateCalendarCategory);
+router.delete('/categories/:id', deleteCalendarCategory);
+
+// Schedule Routes
 router.get('/', getSchedulesByDate);
 router.post('/', optionalUpload, addSchedule);
 router.put('/:id/toggle-complete', toggleScheduleStatus);
