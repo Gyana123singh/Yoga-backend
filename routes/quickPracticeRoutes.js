@@ -9,15 +9,15 @@ const {
 } = require('../controllers/quickPracticeController');
 const { uploadQuickPracticeMedia, uploadMedia } = require('../middleware/uploadMiddleware');
 
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
+
 router.get('/', getQuickPractices);
 router.get('/:id', getQuickPracticeById);
-router.post('/upload', uploadMedia.single('media'), (req, res) => {
+router.post('/upload', uploadMedia.single('media'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
-  const protocol = req.protocol || 'http';
-  const host = req.get('host') || 'localhost:5000';
-  const fileUrl = `${protocol}://${host}/uploads/media/${req.file.filename}`;
+  const fileUrl = await getMediaUrl(req, req.file, 'media');
   return res.json({ success: true, url: fileUrl });
 });
 router.post('/', uploadQuickPracticeMedia, createQuickPractice);
