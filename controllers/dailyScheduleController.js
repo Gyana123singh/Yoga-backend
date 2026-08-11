@@ -1,5 +1,6 @@
 const DailySchedule = require('../models/DailySchedule');
 const CalendarCategory = require('../models/CalendarCategory');
+const UserPracticeLog = require('../models/UserPracticeLog');
 const { getMediaUrl } = require('../utils/cloudinaryHelper');
 
 /**
@@ -477,6 +478,17 @@ const getWeekStats = async (req, res) => {
         totalMinutes += item.durationMinutes || 10;
         activeDaysSet.add(item.scheduledDate);
       }
+    });
+
+    // Also query UserPracticeLog entries for this week
+    const practiceLogs = await UserPracticeLog.find({
+      date: { $in: weekDates }
+    });
+
+    practiceLogs.forEach((log) => {
+      completedSessions += 1;
+      totalMinutes += log.durationMinutes || 10;
+      if (log.date) activeDaysSet.add(log.date);
     });
 
     const activeDays = activeDaysSet.size;
