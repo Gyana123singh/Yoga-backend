@@ -149,7 +149,7 @@ const updateYogaProgram = async (req, res) => {
     const updated = await YogaProgram.findByIdAndUpdate(
       req.params.id,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!updated) {
