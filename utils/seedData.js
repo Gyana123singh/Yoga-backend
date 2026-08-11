@@ -619,7 +619,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 180,
             instructionTitle: 'Inhale',
             instructionDetail: 'Breathe in slowly through your nose and fill your lungs and slowly release the air from your lungs.',
-            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -629,7 +629,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 120,
             instructionTitle: 'Arch & Curve',
             instructionDetail: 'Inhale to drop your belly and lift your gaze. Exhale to round your spine toward the ceiling.',
-            videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -639,7 +639,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 150,
             instructionTitle: 'Engage Abdominals',
             instructionDetail: 'Balance on your sit bones, lift your chest and extend your legs to 45 degrees.',
-            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -649,7 +649,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 120,
             instructionTitle: 'Keep Spine Neutral',
             instructionDetail: 'Press forearms into the mat, squeeze glutes, and draw navel toward your spine.',
-            videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -659,7 +659,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 180,
             instructionTitle: 'Release Tension',
             instructionDetail: 'Lie flat on your back, close your eyes, and let your breath return to normal.',
-            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
           }
         ]
@@ -698,7 +698,7 @@ const MOCK_YOGA_PROGRAMS = [
           durationSeconds: 180,
           instructionTitle: 'Inhale & Lengthen',
           instructionDetail: 'Inhale to sit tall, exhale to gently twist toward your right shoulder.',
-          videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
           poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
         }
       ]
@@ -735,7 +735,7 @@ const MOCK_YOGA_PROGRAMS = [
           durationSeconds: 180,
           instructionTitle: 'Rest Hips on Heels',
           instructionDetail: 'Extend arms forward on the mat and sink hips back onto your heels.',
-          videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
           poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
         }
       ]
