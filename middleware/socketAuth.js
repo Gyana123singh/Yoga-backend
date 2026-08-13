@@ -10,14 +10,10 @@ const socketAuth = async (socket, next) => {
     }
 
     if (!token) {
-      // In development mode, allow anonymous socket connections with fallback ID
-      if (process.env.NODE_ENV === 'development' || process.env.SMARTWATCH_SIMULATION === 'true') {
-        socket.user = { id: 'dev_anonymous_user', _id: 'dev_anonymous_user' };
-        socket.join('user:dev_anonymous_user');
-        return next();
-      }
-
-      return next(new Error('Authentication error: Missing JWT token'));
+      // Allow guest socket connections for public store & real-time updates
+      socket.user = { id: 'guest_user', _id: 'guest_user' };
+      socket.join('user:guest_user');
+      return next();
     }
 
     const JWT_SECRET = process.env.JWT_SECRET || 'aura_yoga_jwt_secret_key_2026';
@@ -35,12 +31,9 @@ const socketAuth = async (socket, next) => {
     console.log(`🔒 [Socket.io Auth] Socket ${socket.id} authenticated for User: ${userIdStr}`);
     next();
   } catch (err) {
-    if (process.env.NODE_ENV === 'development' || process.env.SMARTWATCH_SIMULATION === 'true') {
-      socket.user = { id: 'dev_fallback_user', _id: 'dev_fallback_user' };
-      socket.join('user:dev_fallback_user');
-      return next();
-    }
-    return next(new Error('Authentication error: Invalid or expired token'));
+    socket.user = { id: 'guest_user', _id: 'guest_user' };
+    socket.join('user:guest_user');
+    return next();
   }
 };
 
