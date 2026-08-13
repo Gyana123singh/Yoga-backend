@@ -14,7 +14,9 @@ const QuickPractice = require('../models/QuickPractice');
 const YogaProgram = require('../models/YogaProgram');
 const DailySchedule = require('../models/DailySchedule');
 const Exercise = require('../models/Exercise');
-const Ticket = require('../models/Ticket');
+const StoreCategory = require('../models/StoreCategory');
+const StoreProduct = require('../models/StoreProduct');
+const StoreCoupon = require('../models/StoreCoupon');
 const {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -31,7 +33,10 @@ const {
   MOCK_YOGA_PROGRAMS,
   MOCK_DAILY_SCHEDULES,
   MOCK_EXERCISES,
-  MOCK_TICKETS
+  MOCK_TICKETS,
+  MOCK_STORE_CATEGORIES,
+  MOCK_STORE_PRODUCTS,
+  MOCK_STORE_COUPONS
 } = require('../utils/seedData');
 
 const runSeeder = async () => {
@@ -52,6 +57,9 @@ const runSeeder = async () => {
   await DailySchedule.deleteMany({});
   await Exercise.deleteMany({});
   await Ticket.deleteMany({});
+  await StoreCategory.deleteMany({});
+  await StoreProduct.deleteMany({});
+  await StoreCoupon.deleteMany({});
 
   await User.insertMany(MOCK_USERS);
   await Asana.insertMany(MOCK_ASANAS);
@@ -69,6 +77,23 @@ const runSeeder = async () => {
   await DailySchedule.insertMany(MOCK_DAILY_SCHEDULES);
   await Exercise.insertMany(MOCK_EXERCISES);
   await Ticket.insertMany(MOCK_TICKETS);
+
+  // Seed Store Categories
+  const createdCategories = await StoreCategory.insertMany(MOCK_STORE_CATEGORIES);
+  const categoryMap = {};
+  createdCategories.forEach(cat => {
+    categoryMap[cat.slug] = cat._id;
+  });
+
+  // Seed Store Products with mapped category IDs
+  const productsToInsert = MOCK_STORE_PRODUCTS.map(prod => ({
+    ...prod,
+    category: categoryMap[prod.categorySlug] || createdCategories[0]._id
+  }));
+  await StoreProduct.insertMany(productsToInsert);
+
+  // Seed Store Coupons
+  await StoreCoupon.insertMany(MOCK_STORE_COUPONS);
 
   await Setting.create({
     siteName: 'AURA Yoga & Mindfulness Platform',

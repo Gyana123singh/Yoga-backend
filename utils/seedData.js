@@ -881,6 +881,225 @@ const MOCK_TICKETS = [
   }
 ];
 
+const MOCK_STORE_CATEGORIES = [
+  {
+    name: "Women's Wear",
+    subtitle: "Tops, Leggings &...",
+    badgeTag: "NEW",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop",
+    slug: "womens-wear",
+    displayOrder: 1,
+    isActive: true
+  },
+  {
+    name: "Men's Wear",
+    subtitle: "Tees, Shorts & Ta...",
+    badgeTag: "HOT",
+    imageUrl: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop",
+    slug: "mens-wear",
+    displayOrder: 2,
+    isActive: true
+  },
+  {
+    name: "Yoga Mats",
+    subtitle: "Eco Mats & Blocks",
+    badgeTag: "BESTSELLER",
+    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+    slug: "yoga-mats",
+    displayOrder: 3,
+    isActive: true
+  },
+  {
+    name: "Recovery",
+    subtitle: "Massage Guns & ...",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop",
+    slug: "recovery",
+    displayOrder: 4,
+    isActive: true
+  },
+  {
+    name: "Gym Weights",
+    subtitle: "Dumbbells & Bands",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop",
+    slug: "gym-weights",
+    displayOrder: 5,
+    isActive: true
+  },
+  {
+    name: "Gym & Fitness",
+    subtitle: "Wraps, Straps & ...",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
+    slug: "gym-fitness",
+    displayOrder: 6,
+    isActive: true
+  },
+  {
+    name: "Bottles",
+    subtitle: "Copper & Insulated",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=800&auto=format&fit=crop",
+    slug: "bottles",
+    displayOrder: 7,
+    isActive: true
+  },
+  {
+    name: "Meditation",
+    subtitle: "Cushions & Man...",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?q=80&w=800&auto=format&fit=crop",
+    slug: "meditation",
+    displayOrder: 8,
+    isActive: true
+  },
+  {
+    name: "Chakras",
+    subtitle: "Healing Crystals ...",
+    badgeTag: "",
+    imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop",
+    slug: "chakras",
+    displayOrder: 9,
+    isActive: true
+  }
+];
+
+const MOCK_STORE_PRODUCTS = [
+  {
+    name: "Men's Breathable Flex Yoga Tank",
+    subtitle: "Breathable Stretch • Athletic Fit",
+    description: "Designed for intensive yoga sessions and hot pranayama practice. Features ultra-breathable bio-washed organic cotton with quick-dry flex technology.",
+    categorySlug: "mens-wear",
+    price: 499,
+    mrp: 1299,
+    discountPercent: 61,
+    badgeTag: "BESTSELLER",
+    images: [
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop"
+    ],
+    material: "Cotton",
+    tech: "Bio Wash",
+    colors: [
+      { name: "Black", imageUrl: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=300", hexCode: "#1E1E1E" },
+      { name: "Olive Green", imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=300", hexCode: "#3B4E32" },
+      { name: "Charcoal", imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=300", hexCode: "#333333" }
+    ],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    stockCount: 10,
+    rating: 4.4,
+    reviewCount: 14,
+    applicableCoupon: "YOGA10",
+    couponDiscountPrice: 399,
+    isFeatured: true,
+    isActive: true
+  },
+  {
+    name: "Men's Stretchy Session Tank",
+    subtitle: "Eco Poly-Blend • Sweat-Wick Tech",
+    description: "Lightweight and flexible tank top with 4-way stretch fabric for unhindered mobility during deep poses.",
+    categorySlug: "mens-wear",
+    price: 649,
+    mrp: 1599,
+    discountPercent: 59,
+    badgeTag: "HOT",
+    images: [
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop"
+    ],
+    material: "Eco Poly-Blend",
+    tech: "Sweat-Wick",
+    colors: [
+      { name: "Sage Green", imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=300", hexCode: "#5C7658" },
+      { name: "Slate Gray", imageUrl: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=300", hexCode: "#708090" }
+    ],
+    sizes: ["S", "M", "L", "XL"],
+    stockCount: 18,
+    rating: 4.6,
+    reviewCount: 19,
+    applicableCoupon: "YOGA10",
+    couponDiscountPrice: 549,
+    isFeatured: true,
+    isActive: true
+  },
+  {
+    name: "Men's Organic Cotton Yoga Tee",
+    subtitle: "100% Organic • Relaxed Fit",
+    description: "Pure organic cotton t-shirt with soft seams and natural dyes. Ideal for meditation, restorative flow, and daily comfort.",
+    categorySlug: "mens-wear",
+    price: 549,
+    mrp: 1399,
+    discountPercent: 60,
+    badgeTag: "",
+    images: [
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop"
+    ],
+    material: "100% Organic Cotton",
+    tech: "Bio Wash",
+    colors: [
+      { name: "Beige", imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=300", hexCode: "#F5F5DC" },
+      { name: "Sand", imageUrl: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=300", hexCode: "#C2B280" }
+    ],
+    sizes: ["M", "L", "XL", "XXL"],
+    stockCount: 25,
+    rating: 4.5,
+    reviewCount: 22,
+    applicableCoupon: "YOGA10",
+    couponDiscountPrice: 449,
+    isFeatured: false,
+    isActive: true
+  },
+  {
+    name: "Yoga Kits Eco Essentials Bundle",
+    subtitle: "Mats, Wheel, Blocks & Strap Complete Kit",
+    description: "The ultimate all-in-one Yoga Kit including non-slip TPE yoga mat, cork balance blocks, alignment yoga wheel, resistance strap, copper bottle, and anti-slip socks.",
+    categorySlug: "yoga-mats",
+    price: 1499,
+    mrp: 3499,
+    discountPercent: 57,
+    badgeTag: "BESTSELLER",
+    images: [
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop"
+    ],
+    material: "Eco TPE & Cork",
+    tech: "Non-Slip Grip",
+    colors: [
+      { name: "Emerald Green", imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=300", hexCode: "#2E4028" }
+    ],
+    sizes: ["Standard"],
+    stockCount: 15,
+    rating: 4.9,
+    reviewCount: 48,
+    applicableCoupon: "YOGA10",
+    couponDiscountPrice: 1299,
+    isFeatured: true,
+    isActive: true
+  }
+];
+
+const MOCK_STORE_COUPONS = [
+  {
+    code: "YOGA10",
+    description: "Get ₹100 flat discount on Yoga Kits & Apparel",
+    discountType: "fixed",
+    discountValue: 100,
+    minOrderAmount: 399,
+    status: "Active"
+  },
+  {
+    code: "WELCOME20",
+    description: "20% off your first YogaPrana purchase",
+    discountType: "percentage",
+    discountValue: 20,
+    minOrderAmount: 499,
+    status: "Active"
+  }
+];
+
 module.exports = {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -897,7 +1116,10 @@ module.exports = {
   MOCK_YOGA_PROGRAMS,
   MOCK_DAILY_SCHEDULES,
   MOCK_EXERCISES,
-  MOCK_TICKETS
+  MOCK_TICKETS,
+  MOCK_STORE_CATEGORIES,
+  MOCK_STORE_PRODUCTS,
+  MOCK_STORE_COUPONS
 };
 
 
