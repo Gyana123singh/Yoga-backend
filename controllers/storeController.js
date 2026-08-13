@@ -3,6 +3,7 @@ const StoreProduct = require('../models/StoreProduct');
 const StoreCoupon = require('../models/StoreCoupon');
 const StoreOrder = require('../models/StoreOrder');
 const { getSocketIO } = require('../config/socket');
+const { getMediaUrl } = require('../utils/cloudinaryHelper');
 
 // ==========================================
 // CATEGORIES CONTROLLER
@@ -398,6 +399,21 @@ exports.checkPincode = async (req, res) => {
         expressDelivery: true
       }
     });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.uploadStoreImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No image file provided' });
+    }
+    const imageUrl = await getMediaUrl(req, req.file, 'store');
+    if (!imageUrl) {
+      return res.status(500).json({ success: false, message: 'Image upload failed' });
+    }
+    res.json({ success: true, url: imageUrl });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

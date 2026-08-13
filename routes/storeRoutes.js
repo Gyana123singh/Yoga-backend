@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { uploadMedia } = require('../middleware/uploadMiddleware');
 const {
   getCategories,
   getAllCategoriesAdmin,
@@ -22,8 +23,12 @@ const {
   getOrders,
   updateOrderStatus,
   trackOrder,
-  checkPincode
+  checkPincode,
+  uploadStoreImage
 } = require('../controllers/storeController');
+
+// Image Upload Route (Cloudinary / Local Fallback)
+router.post('/upload', uploadMedia.single('image'), uploadStoreImage);
 
 // Category Routes
 router.get('/categories', getCategories);
