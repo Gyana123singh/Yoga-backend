@@ -369,3 +369,36 @@ exports.updateOrderStatus = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+exports.trackOrder = async (req, res) => {
+  try {
+    const { orderNumber } = req.params;
+    const order = await StoreOrder.findOne({ orderNumber: orderNumber.toUpperCase() });
+    if (!order) return res.status(404).json({ success: false, message: 'Order number not found' });
+    res.json({ success: true, data: order });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.checkPincode = async (req, res) => {
+  try {
+    const { pincode } = req.body;
+    if (!pincode || pincode.length < 6) {
+      return res.status(400).json({ success: false, message: 'Invalid 6-digit Pincode' });
+    }
+    res.json({
+      success: true,
+      data: {
+        pincode,
+        isServiceable: true,
+        deliveryDays: 1,
+        deliveryDate: 'Tomorrow',
+        isCodAvailable: true,
+        expressDelivery: true
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -20,7 +20,9 @@ const {
   validateCoupon,
   createOrder,
   getOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  trackOrder,
+  checkPincode
 } = require('../controllers/storeController');
 
 // Category Routes
@@ -39,7 +41,8 @@ router.put('/products/:id', updateProduct);
 router.delete('/products/:id', deleteProduct);
 router.post('/products/:id/reviews', addProductReview);
 
-// Coupon Routes
+// Pincode & Coupon Routes
+router.post('/pincode/check', checkPincode);
 router.get('/coupons', getCoupons);
 router.post('/coupons', createCoupon);
 router.put('/coupons/:id', updateCoupon);
@@ -49,6 +52,7 @@ router.post('/coupons/validate', validateCoupon);
 // Order Routes
 router.post('/orders', createOrder);
 router.get('/orders', getOrders);
+router.get('/orders/track/:orderNumber', trackOrder);
 router.put('/orders/:id/status', updateOrderStatus);
 
 module.exports = router;
