@@ -50,6 +50,7 @@ app.use('/api/health', require('./routes/healthRoutes'));
 app.use('/api/settings', require('./routes/settingRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/tickets', require('./routes/ticketRoutes'));
+app.use('/api/smartwatch', require('./routes/smartwatchRoutes'));
 app.use('/api/seed', require('./routes/seedRoutes'));
 
 // Health check root route
