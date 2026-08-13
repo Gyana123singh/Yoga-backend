@@ -153,8 +153,20 @@ exports.createProduct = async (req, res) => {
       validCategoryId = existingCat._id;
     }
 
+    let imageGallery = req.body.imageGallery || [];
+    let activeImages = [];
+
+    if (Array.isArray(imageGallery) && imageGallery.length > 0) {
+      activeImages = imageGallery.filter(img => img.isActive !== false).map(img => typeof img === 'string' ? img : img.url);
+    } else if (req.body.images && Array.isArray(req.body.images) && req.body.images.length > 0) {
+      imageGallery = req.body.images.map(url => ({ url: typeof url === 'string' ? url : url.url, isActive: true }));
+      activeImages = req.body.images.map(url => typeof url === 'string' ? url : url.url);
+    }
+
     const product = await StoreProduct.create({
       ...req.body,
+      imageGallery,
+      images: activeImages,
       category: validCategoryId,
       discountPercent
     });
@@ -176,6 +188,11 @@ exports.updateProduct = async (req, res) => {
     let updateData = { ...req.body };
     if (!updateData.category || updateData.category === '' || !updateData.category.match(/^[0-9a-fA-F]{24}$/)) {
       delete updateData.category;
+    }
+
+    if (updateData.imageGallery && Array.isArray(updateData.imageGallery)) {
+      const activeImages = updateData.imageGallery.filter(img => img.isActive !== false).map(img => typeof img === 'string' ? img : img.url);
+      updateData.images = activeImages;
     }
 
     const product = await StoreProduct.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true }).populate('category', 'name slug');

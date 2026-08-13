@@ -11,6 +11,10 @@ const storeProductSchema = new mongoose.Schema({
   discountPercent: { type: Number, default: 0 },
   badgeTag: { type: String, default: '' }, // 'BESTSELLER', 'HOT', 'NEW', 'OFFERS'
   images: [{ type: String }],
+  imageGallery: [{
+    url: { type: String, required: true },
+    isActive: { type: Boolean, default: true }
+  }],
   material: { type: String, default: 'Cotton' },
   tech: { type: String, default: 'Bio Wash' },
   colors: [{
