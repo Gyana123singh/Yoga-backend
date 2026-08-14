@@ -17,6 +17,7 @@ const Exercise = require('../models/Exercise');
 const StoreCategory = require('../models/StoreCategory');
 const StoreProduct = require('../models/StoreProduct');
 const StoreCoupon = require('../models/StoreCoupon');
+const Ticket = require('../models/Ticket');
 const {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -96,7 +97,7 @@ const runSeeder = async () => {
   await StoreCoupon.insertMany(MOCK_STORE_COUPONS);
 
   await Setting.create({
-    siteName: 'AURA Yoga & Mindfulness Platform',
+    siteName: 'Yoga Fitness & Mindfulness Platform',
     aiModelVersion: 'v2.4-NeuralFlow',
     razorpayKeyConfig: 'rzp_test_51Pq349YogaKey2026',
     healthKitEnabled: true,

@@ -4,27 +4,41 @@ const { MOCK_USERS } = require('../utils/seedData');
 const getUsers = async (req, res) => {
   try {
     const { planType, search } = req.query;
-    let query = {};
+    // Exclude Admin accounts from Member Directory
+    let query = {
+      authProvider: { $ne: 'admin' },
+      id: { $ne: 'USR-ADMIN-01' }
+    };
 
     if (planType && planType !== 'All') {
       query.planType = planType;
     }
 
     if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { primaryGoal: { $regex: search, $options: 'i' } }
+      query.$and = [
+        { authProvider: { $ne: 'admin' } },
+        { id: { $ne: 'USR-ADMIN-01' } },
+        {
+          $or: [
+            { name: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { primaryGoal: { $regex: search, $options: 'i' } }
+          ]
+        }
       ];
+      delete query.authProvider;
+      delete query.id;
     }
 
     let users = await User.find(query).sort({ createdAt: -1 });
 
-    // Fallback if database has no records yet
+    const customerMocks = MOCK_USERS.filter(u => u.authProvider !== 'admin' && u.id !== 'USR-ADMIN-01');
+
+    // Fallback if database has no customer records yet
     if (users.length === 0 && !planType && !search) {
-      users = MOCK_USERS;
+      users = customerMocks;
     } else if (planType && planType !== 'All' && users.length === 0) {
-      users = MOCK_USERS.filter(u => u.planType === planType);
+      users = customerMocks.filter(u => u.planType === planType);
     }
 
     res.json({ success: true, count: users.length, data: users });

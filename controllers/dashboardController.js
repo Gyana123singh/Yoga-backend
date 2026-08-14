@@ -7,13 +7,14 @@ const HealthSync = require('../models/HealthSync');
 
 const getDashboardStats = async (req, res) => {
   try {
-    const totalUsersCount = await User.countDocuments() || 148520;
-    const premiumUsersCount = await User.countDocuments({ planType: 'Premium' }) || 48910;
+    const totalUsersCount = await User.countDocuments({ authProvider: { $ne: 'admin' }, id: { $ne: 'USR-ADMIN-01' } }) || 148520;
+    const premiumUsersCount = await User.countDocuments({ planType: 'Premium', authProvider: { $ne: 'admin' }, id: { $ne: 'USR-ADMIN-01' } }) || 48910;
     const asanaCount = await Asana.countDocuments() || 250;
     const breathingCount = await Breathing.countDocuments() || 45;
     const activeRulesCount = await RecommendationRule.countDocuments({ status: 'Active' }) || 18;
     const liveClasses = await LiveClass.find() || [];
     const healthSyncs = await HealthSync.find() || [];
+    const recentUsers = await User.find({ authProvider: { $ne: 'admin' }, id: { $ne: 'USR-ADMIN-01' } }).sort({ createdAt: -1 }).limit(5);
 
     const stats = {
       totalUsers: totalUsersCount,
@@ -81,7 +82,8 @@ const getDashboardStats = async (req, res) => {
       countryAnalytics,
       recentNotifications,
       liveClasses,
-      healthSyncs
+      healthSyncs,
+      recentUsers
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

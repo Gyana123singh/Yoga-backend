@@ -75,6 +75,65 @@ const protectCustomer = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  protectCustomer
+const protectAdmin = async (req, res, next) => {
+  try {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    } else if (req.query && req.query.token) {
+      token = req.query.token;
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Admin authorization token required.'
+      });
+    }
+
+    const JWT_SECRET = process.env.JWT_SECRET || 'aura_yoga_jwt_secret_key_2026';
+    let decodedJwt;
+
+    try {
+      decodedJwt = jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid or expired admin authorization token.'
+      });
+    }
+
+    if (!decodedJwt || decodedJwt.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Forbidden. Admin privileges required.'
+      });
+    }
+
+    const adminUser = await User.findOne({ id: decodedJwt.id }) || await User.findById(decodedJwt.id || decodedJwt.mongoId);
+
+    if (!adminUser) {
+      return res.status(401).json({
+        success: false,
+        message: 'Admin user account no longer exists.'
+      });
+    }
+
+    req.admin = adminUser;
+    req.user = adminUser;
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Admin authorization error',
+      error: error.message
+    });
+  }
 };
+
+module.exports = {
+  protectCustomer,
+  protectAdmin
+};
+

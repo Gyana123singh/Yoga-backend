@@ -1,8 +1,10 @@
+const adminEmailFromEnv = (process.env.ADMIN_EMAIL || 'admin@gmail.com').trim().toLowerCase();
+
 const MOCK_USERS = [
   {
     id: 'USR-ADMIN-01',
-    name: 'Dr. Sarah Jenkins',
-    email: 'admin@aura.io',
+    name: 'Yoga Fitness Admin',
+    email: adminEmailFromEnv,
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
     authProvider: 'admin',
     plan: 'Executive Unlimited',
@@ -19,6 +21,90 @@ const MOCK_USERS = [
     country: 'United States',
     language: 'English',
     aiPromptsCount: 500
+  },
+  {
+    id: 'USR-1001',
+    name: 'Elena Rostova',
+    email: 'elena.rostova@gmail.com',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=250',
+    authProvider: 'google',
+    plan: 'Pro Annual ($149/yr)',
+    planType: 'Premium',
+    status: 'Active',
+    joinedDate: '2025-11-12',
+    streak: 42,
+    totalMinutes: 1840,
+    primaryGoal: 'Stress Reduction & Flexibility',
+    devicesConnected: ['Apple Watch Series 9'],
+    lastSession: '15 mins ago (Vinyasa Flow)',
+    hrvAvg: '78 ms',
+    sleepScore: '89/100',
+    country: 'United States',
+    language: 'English',
+    aiPromptsCount: 24
+  },
+  {
+    id: 'USR-1002',
+    name: 'Marcus Vance',
+    email: 'marcus.vance@gmail.com',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=250',
+    authProvider: 'google',
+    plan: 'Starter Free',
+    planType: 'Free',
+    status: 'Active',
+    joinedDate: '2026-01-05',
+    streak: 14,
+    totalMinutes: 420,
+    primaryGoal: 'Back Pain Relief & Posture',
+    devicesConnected: ['Oura Ring Gen 3'],
+    lastSession: '2 hours ago (Cat-Cow Decompression)',
+    hrvAvg: '62 ms',
+    sleepScore: '74/100',
+    country: 'United Kingdom',
+    language: 'English',
+    aiPromptsCount: 8
+  },
+  {
+    id: 'USR-1003',
+    name: 'Sophia Lin',
+    email: 'sophia.lin@gmail.com',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+    authProvider: 'email',
+    plan: 'Monthly Pro ($19/mo)',
+    planType: 'Premium',
+    status: 'Active',
+    joinedDate: '2025-08-20',
+    streak: 88,
+    totalMinutes: 3950,
+    primaryGoal: 'Deep Sleep & Relaxation',
+    devicesConnected: ['Garmin Forerunner 965'],
+    lastSession: 'Yesterday (4-7-8 Breathing)',
+    hrvAvg: '84 ms',
+    sleepScore: '92/100',
+    country: 'Canada',
+    language: 'English',
+    aiPromptsCount: 45
+  },
+  {
+    id: 'USR-1004',
+    name: 'David Chen',
+    email: 'david.chen@gmail.com',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250',
+    authProvider: 'apple',
+    plan: 'Starter Free',
+    planType: 'Free',
+    status: 'Active',
+    joinedDate: '2026-02-01',
+    streak: 5,
+    totalMinutes: 150,
+    primaryGoal: 'Core Strength & Balance',
+    devicesConnected: ['Pixel Watch 2'],
+    lastSession: '3 days ago (Sun Salutation)',
+    hrvAvg: '58 ms',
+    sleepScore: '70/100',
+    country: 'Australia',
+    language: 'English',
+    aiPromptsCount: 3
   }
 ];
 
@@ -619,7 +705,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 180,
             instructionTitle: 'Inhale',
             instructionDetail: 'Breathe in slowly through your nose and fill your lungs and slowly release the air from your lungs.',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -629,7 +715,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 120,
             instructionTitle: 'Arch & Curve',
             instructionDetail: 'Inhale to drop your belly and lift your gaze. Exhale to round your spine toward the ceiling.',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -639,7 +725,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 150,
             instructionTitle: 'Engage Abdominals',
             instructionDetail: 'Balance on your sit bones, lift your chest and extend your legs to 45 degrees.',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            videoUrl: 'https://cdn.pixabay.com/video/2022/10/05/133668-757876807_large.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -649,7 +735,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 120,
             instructionTitle: 'Keep Spine Neutral',
             instructionDetail: 'Press forearms into the mat, squeeze glutes, and draw navel toward your spine.',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            videoUrl: 'https://cdn.pixabay.com/video/2023/04/17/159265-818617835_large.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=800&auto=format&fit=crop'
           },
           {
@@ -659,7 +745,7 @@ const MOCK_YOGA_PROGRAMS = [
             durationSeconds: 180,
             instructionTitle: 'Release Tension',
             instructionDetail: 'Lie flat on your back, close your eyes, and let your breath return to normal.',
-            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            videoUrl: 'https://cdn.pixabay.com/video/2021/07/28/83084-580796035_large.mp4',
             poseImageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'
           }
         ]
@@ -698,7 +784,7 @@ const MOCK_YOGA_PROGRAMS = [
           durationSeconds: 180,
           instructionTitle: 'Inhale & Lengthen',
           instructionDetail: 'Inhale to sit tall, exhale to gently twist toward your right shoulder.',
-          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+          videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
           poseImageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop'
         }
       ]
@@ -735,7 +821,7 @@ const MOCK_YOGA_PROGRAMS = [
           durationSeconds: 180,
           instructionTitle: 'Rest Hips on Heels',
           instructionDetail: 'Extend arms forward on the mat and sink hips back onto your heels.',
-          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+          videoUrl: 'https://cdn.pixabay.com/video/2022/10/05/133668-757876807_large.mp4',
           poseImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'
         }
       ]

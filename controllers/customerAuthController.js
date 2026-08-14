@@ -100,6 +100,18 @@ const googleLogin = async (req, res) => {
       await user.save();
     }
 
+    // Emit Real-Time Socket.io event to Admin Dashboard
+    try {
+      const { getSocketIO } = require('../config/socket');
+      const io = getSocketIO();
+      if (io) {
+        io.emit('user:new', user);
+        io.emit('user_registered', user);
+      }
+    } catch (e) {
+      console.warn('Socket emit on googleLogin warning:', e.message);
+    }
+
     // Generate Mobile App Session JWT
     const tokenPayload = {
       id: user.id,
@@ -239,8 +251,21 @@ const adminLogin = async (req, res) => {
     }
 
     const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
 
-    // Search for existing Admin or create default admin user
+    // Fetch credentials from .env with fallback defaults
+    const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@aura.io').trim().toLowerCase();
+    const envAdminPassword = (process.env.ADMIN_PASSWORD || 'admin123').trim();
+
+    // Verify provided credentials against environment configuration
+    if (cleanEmail !== envAdminEmail || cleanPassword !== envAdminPassword) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid admin email or password. Access denied.'
+      });
+    }
+
+    // Credentials verified! Search for existing Admin or create default admin record
     let adminUser = await User.findOne({
       $or: [
         { email: cleanEmail },
@@ -252,8 +277,8 @@ const adminLogin = async (req, res) => {
     if (!adminUser) {
       adminUser = new User({
         id: 'USR-ADMIN-01',
-        name: 'Dr. Sarah Jenkins',
-        email: cleanEmail || 'admin@aura.io',
+        name: 'Yoga Fitness Admin',
+        email: cleanEmail,
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
         authProvider: 'admin',
         planType: 'Premium',
@@ -263,11 +288,15 @@ const adminLogin = async (req, res) => {
         isEmailVerified: true
       });
       await adminUser.save();
+    } else {
+      adminUser.lastLoginAt = new Date();
+      adminUser.status = 'Active';
+      await adminUser.save();
     }
 
     // Generate Admin Session JWT
     const token = jwt.sign(
-      { id: adminUser.id, email: adminUser.email, role: 'admin' },
+      { id: adminUser.id, mongoId: adminUser._id, email: adminUser.email, role: 'admin' },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -296,10 +325,47 @@ const adminLogin = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Get currently logged in admin session profile
+ * @route   GET /api/auth/admin-me
+ * @access  Private (Admin)
+ */
+const getAdminMe = async (req, res) => {
+  try {
+    const adminUser = req.admin || req.user;
+    if (!adminUser) {
+      return res.status(401).json({
+        success: false,
+        message: 'No authenticated admin session found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        id: adminUser.id || 'USR-ADMIN-01',
+        name: adminUser.name || 'Yoga Fitness Admin',
+        email: adminUser.email,
+        avatar: adminUser.avatar,
+        role: 'Super Administrator',
+        status: adminUser.status
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch admin profile',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   googleLogin,
   adminLogin,
+  getAdminMe,
   getMe,
   updateProfile,
   logout
 };
+

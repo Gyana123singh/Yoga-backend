@@ -58,7 +58,7 @@ const uploadFeelingVideo = async (req, res) => {
 
     if (!videoUrl) {
       // Default fallback demo yoga video URL
-      videoUrl = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
+      videoUrl = 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4';
     }
 
     const durSec = parseInt(durationSeconds) || 180;
