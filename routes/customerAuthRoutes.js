@@ -3,9 +3,15 @@ const router = express.Router();
 const { googleLogin, adminLogin, getAdminMe, getMe, updateProfile, logout } = require('../controllers/customerAuthController');
 const { protectCustomer, protectAdmin } = require('../middleware/authMiddleware');
 
-// Public routes: Google Auth & Admin Login
+// Public routes: Google Auth & Customer Login / Signup & Admin Login
 router.post('/google-login', googleLogin);
-router.post('/google', googleLogin); // Alias route
+router.post('/google', googleLogin);
+router.post('/google-auth', googleLogin);
+router.post('/google-signup', googleLogin);
+router.post('/login', googleLogin);
+router.post('/customer-login', googleLogin);
+router.post('/signup', googleLogin);
+router.post('/register', googleLogin);
 router.post('/admin-login', adminLogin);
 
 // Protected Admin Session route

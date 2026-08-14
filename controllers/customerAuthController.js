@@ -13,10 +13,10 @@ const googleLogin = async (req, res) => {
   try {
     let { idToken, token, fcmToken, primaryGoal, country, language, email, name, avatar, picture, uid, googleId } = req.body;
 
-    let targetUid = uid || googleId;
-    let targetEmail = email;
-    let targetName = name;
-    let targetPicture = avatar || picture;
+    let targetUid = uid || googleId || req.body.user?.uid || req.body.user?.id || req.body.profile?.id || req.body.data?.uid;
+    let targetEmail = email || req.body.user?.email || req.body.profile?.email || req.body.data?.email;
+    let targetName = name || req.body.user?.name || req.body.user?.displayName || req.body.profile?.name || req.body.data?.name;
+    let targetPicture = avatar || picture || req.body.user?.photoURL || req.body.user?.picture || req.body.profile?.picture;
 
     const rawToken = idToken || token;
 
