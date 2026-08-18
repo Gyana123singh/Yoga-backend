@@ -28,13 +28,13 @@ const mediaFilter = (req, file, cb) => {
 
 const uploadVideo = multer({
   storage: memoryStorage,
-  limits: { fileSize: 100 * 1024 * 1024 },
+  limits: { fileSize: 1024 * 1024 * 1024 }, // 1GB limit
   fileFilter: videoFilter
 });
 
 const uploadMedia = multer({
   storage: memoryStorage,
-  limits: { fileSize: 200 * 1024 * 1024 },
+  limits: { fileSize: 1024 * 1024 * 1024 }, // 1GB limit
   fileFilter: mediaFilter
 });
 
