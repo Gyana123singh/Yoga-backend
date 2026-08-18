@@ -18,8 +18,24 @@ const server = http.createServer(app);
 // Initialize Socket.io Real-time WebSocket Server
 initSocket(server);
 
-// Middleware
-app.use(cors());
+// Enhanced CORS Middleware & Preflight Handler
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['*'],
+  credentials: true
+}));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json({ limit: '200mb' }));
 app.use(express.urlencoded({ extended: true, limit: '200mb' }));
 
@@ -78,7 +94,14 @@ app.use((req, res) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-  console.error('API Error:', err.stack);
+  console.error('API Error:', err.stack || err);
+  res.header('Access-Control-Allow-Origin', '*');
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({
+      success: false,
+      message: 'File payload too large. Maximum file upload limit is 100MB.'
+    });
+  }
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error'
