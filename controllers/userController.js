@@ -41,7 +41,15 @@ const getUsers = async (req, res) => {
       users = customerMocks.filter(u => u.planType === planType);
     }
 
-    res.json({ success: true, count: users.length, data: users });
+    const mappedUsers = users.map(u => {
+      const uObj = typeof u.toObject === 'function' ? u.toObject() : { ...u };
+      if (!uObj.avatar || typeof uObj.avatar !== 'string' || uObj.avatar.trim() === '' || uObj.avatar.includes('null')) {
+        uObj.avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(uObj.name || 'User')}&background=6366f1&color=fff&bold=true`;
+      }
+      return uObj;
+    });
+
+    res.json({ success: true, count: mappedUsers.length, data: mappedUsers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

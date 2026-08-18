@@ -14,7 +14,14 @@ const getDashboardStats = async (req, res) => {
     const activeRulesCount = await RecommendationRule.countDocuments({ status: 'Active' }) || 18;
     const liveClasses = await LiveClass.find() || [];
     const healthSyncs = await HealthSync.find() || [];
-    const recentUsers = await User.find({ authProvider: { $ne: 'admin' }, id: { $ne: 'USR-ADMIN-01' } }).sort({ createdAt: -1 }).limit(5);
+    const rawRecentUsers = await User.find({ authProvider: { $ne: 'admin' }, id: { $ne: 'USR-ADMIN-01' } }).sort({ createdAt: -1 }).limit(5);
+    const recentUsers = rawRecentUsers.map(u => {
+      const uObj = u.toObject();
+      if (!uObj.avatar || typeof uObj.avatar !== 'string' || uObj.avatar.trim() === '' || uObj.avatar.includes('null')) {
+        uObj.avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(uObj.name || 'User')}&background=6366f1&color=fff&bold=true`;
+      }
+      return uObj;
+    });
 
     const stats = {
       totalUsers: totalUsersCount,

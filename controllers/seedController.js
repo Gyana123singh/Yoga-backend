@@ -97,7 +97,7 @@ const runSeeder = async () => {
   await StoreCoupon.insertMany(MOCK_STORE_COUPONS);
 
   await Setting.create({
-    siteName: 'Yoga Fitness & Mindfulness Platform',
+    siteName: 'Yoga Prana Fitness & Mindfulness Platform',
     aiModelVersion: 'v2.4-NeuralFlow',
     razorpayKeyConfig: 'rzp_test_51Pq349YogaKey2026',
     healthKitEnabled: true,

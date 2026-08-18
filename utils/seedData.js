@@ -3,7 +3,7 @@ const adminEmailFromEnv = (process.env.ADMIN_EMAIL || 'admin@gmail.com').trim().
 const MOCK_USERS = [
   {
     id: 'USR-ADMIN-01',
-    name: 'Yoga Fitness Admin',
+    name: 'Yoga Prana Fitness Admin',
     email: adminEmailFromEnv,
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
     authProvider: 'admin',

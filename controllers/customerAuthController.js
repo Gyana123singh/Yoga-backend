@@ -78,7 +78,7 @@ const googleLogin = async (req, res) => {
         firebaseUid: targetUid,
         name: targetName || cleanEmail.split('@')[0],
         email: cleanEmail,
-        avatar: targetPicture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+        avatar: targetPicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(targetName || cleanEmail.split('@')[0])}&background=6366f1&color=fff&bold=true`,
         authProvider: 'google',
         isEmailVerified: true,
         planType: 'Free',
@@ -291,7 +291,7 @@ const adminLogin = async (req, res) => {
     if (!adminUser) {
       adminUser = new User({
         id: 'USR-ADMIN-01',
-        name: 'Yoga Fitness Admin',
+        name: 'Yoga Prana Fitness Admin',
         email: cleanEmail,
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
         authProvider: 'admin',
@@ -305,6 +305,9 @@ const adminLogin = async (req, res) => {
     } else {
       adminUser.lastLoginAt = new Date();
       adminUser.status = 'Active';
+      if (!adminUser.name || adminUser.name === 'Yoga Fitness Admin' || adminUser.name === 'yogapranafitness Admin' || adminUser.name.includes('Yoga Fitness')) {
+        adminUser.name = 'Yoga Prana Fitness Admin';
+      }
       await adminUser.save();
     }
 
@@ -358,7 +361,7 @@ const getAdminMe = async (req, res) => {
       success: true,
       data: {
         id: adminUser.id || 'USR-ADMIN-01',
-        name: adminUser.name || 'Yoga Fitness Admin',
+        name: adminUser.name || 'Yoga Prana Fitness Admin',
         email: adminUser.email,
         avatar: adminUser.avatar,
         role: 'Super Administrator',

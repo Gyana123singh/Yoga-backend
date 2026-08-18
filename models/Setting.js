@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const settingSchema = new mongoose.Schema({
-  siteName: { type: String, default: 'Yoga Fitness & Wellness Studio' },
+  siteName: { type: String, default: 'Yoga Prana Fitness & Wellness Studio' },
   aiModelVersion: { type: String, default: 'v2.4-NeuralFlow' },
   razorpayKeyConfig: { type: String, default: 'rzp_test_51Pq349YogaKey2026' },
   healthKitEnabled: { type: Boolean, default: true },
