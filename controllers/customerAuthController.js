@@ -45,7 +45,7 @@ const googleLogin = async (req, res) => {
           targetName = decodedToken.name || targetName;
           targetPicture = decodedToken.picture || targetPicture;
         }
-      } catch (e) {}
+      } catch (e) { }
     }
 
     if (!targetEmail) {

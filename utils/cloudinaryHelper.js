@@ -66,7 +66,7 @@ const getMediaUrl = async (req, file, subfolder = 'media') => {
     console.warn('⚠️ [Media Upload] Cloudinary upload failed. Saving to local disk storage fallback...');
     const localFileName = saveBufferLocally(file.buffer, file.originalname);
     if (localFileName) {
-      // Dynamic host detection (e.g. apiyoga.hirehand.co.in on live server vs localhost:5000 on local)
+      // Dynamic host detection (e.g. api.yogapranafitness.com on live server vs localhost:5000 on local)
       const protocol = req ? (req.headers['x-forwarded-proto'] || req.protocol || 'http') : 'http';
       const host = req ? req.get('host') : (process.env.HOST || 'localhost:5000');
       const localUrl = `${protocol}://${host}/uploads/${localFileName}`;
