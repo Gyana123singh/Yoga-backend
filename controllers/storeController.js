@@ -235,7 +235,7 @@ exports.addProductReview = async (req, res) => {
     if (!product.reviews) product.reviews = [];
     product.reviews.unshift(newReview);
     product.reviewCount = product.reviews.length;
-    
+
     const totalSum = product.reviews.reduce((acc, r) => acc + r.rating, 0);
     product.rating = Number((totalSum / product.reviews.length).toFixed(1));
 
@@ -332,7 +332,7 @@ exports.validateCoupon = async (req, res) => {
 exports.createOrder = async (req, res) => {
   try {
     const { customerName, customerEmail, customerPhone, shippingAddress, items, subtotal, couponCode, discountAmount, totalAmount, paymentMethod } = req.body;
-    
+
     const orderNumber = 'YOGA-' + Math.floor(100000 + Math.random() * 900000);
     const order = await StoreOrder.create({
       orderNumber,
