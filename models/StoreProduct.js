@@ -24,8 +24,8 @@ const storeProductSchema = new mongoose.Schema({
   }],
   sizes: [{ type: String, default: 'M' }], // ['S', 'M', 'L', 'XL', 'XXL']
   stockCount: { type: Number, default: 50 },
-  rating: { type: Number, default: 4.5 },
-  reviewCount: { type: Number, default: 12 },
+  rating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
   materialsCare: { type: String, default: '100% Premium Bio-Washed Cotton. Machine wash cold with like colors. Tumble dry low or line dry in shade. Do not bleach or dry clean.' },
   additionalInfo: { type: String, default: 'Country of Origin: India. Net Quantity: 1 N. Manufactured & Packed by YogaPrana Wellness Pvt. Ltd.' },
   reviews: [{
