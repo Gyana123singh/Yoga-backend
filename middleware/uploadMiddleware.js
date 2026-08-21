@@ -46,8 +46,17 @@ const uploadQuickPracticeMedia = uploadMedia.fields([
   { name: 'voiceGuidance', maxCount: 1 }
 ]);
 
+// Multi-field upload middleware for Explore Session
+const uploadSessionMedia = uploadMedia.fields([
+  { name: 'heroImage', maxCount: 1 },
+  { name: 'bgImage', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 },
+  { name: 'video', maxCount: 1 }
+]);
+
 module.exports = {
   uploadVideo,
   uploadMedia,
-  uploadQuickPracticeMedia
+  uploadQuickPracticeMedia,
+  uploadSessionMedia
 };

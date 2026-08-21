@@ -1186,6 +1186,135 @@ const MOCK_STORE_COUPONS = [
   }
 ];
 
+const MOCK_EXPLORE_SESSIONS = [
+  {
+    title: 'Morning Prana Boost',
+    badgeTag: 'BREATH',
+    subtitle: 'Energize your body and mind with refreshing breathing techniques • 12:45',
+    totalDurationText: '12:45',
+    heroImageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1000&auto=format&fit=crop',
+    bgImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop',
+    order: 1,
+    isActive: true,
+    videoClasses: [
+      {
+        title: '30 Min Express Morning Prana Boost',
+        durationTag: '30 MINS',
+        durationCategory: '30 Mins',
+        subtitle: 'HD 1080p Video • Voice Guided',
+        description: 'Quick & effective guided video class designed to awaken your body and sharpen mental focus in 30 minutes.',
+        includesText: 'Includes: Sun Salutation, Child Pose, Downward Dog, Cobra',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+        buttonText: 'Start 30 Mins Class',
+        durationMinutes: 30,
+        order: 1
+      },
+      {
+        title: '1 Hour Complete Morning Prana Boost',
+        durationTag: '1 HOUR',
+        durationCategory: '1 Hour',
+        subtitle: 'HD 1080p Video • Voice Guided',
+        description: 'Comprehensive 60-minute immersive guided yoga and breathing session for full body rejuvenation.',
+        includesText: 'Includes: Pranayama, Sun Salutation, Warrior Flow, Savasana',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+        buttonText: 'Start 1 Hour Class',
+        durationMinutes: 60,
+        order: 2
+      }
+    ]
+  },
+  {
+    title: 'Deep Calm & Relaxation',
+    badgeTag: 'CALM',
+    subtitle: 'Release stress and calm your mind with soothing breathing practices • 18:30',
+    totalDurationText: '18:30',
+    heroImageUrl: 'https://images.unsplash.com/photo-1511497584788-876761c11969?q=80&w=1000&auto=format&fit=crop',
+    bgImageUrl: 'https://images.unsplash.com/photo-1511497584788-876761c11969?q=80&w=1200&auto=format&fit=crop',
+    order: 2,
+    isActive: true,
+    videoClasses: [
+      {
+        title: '30 Min Restorative Evening Calm',
+        durationTag: '30 MINS',
+        durationCategory: '30 Mins',
+        subtitle: 'HD 1080p Video • Voice Guided',
+        description: 'Calming gentle stretch & 4-7-8 breathing technique to unwind after work.',
+        includesText: 'Includes: Balasana, Supta Baddha Konasana, Deep Breathing',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1511497584788-876761c11969?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425176161_large.mp4',
+        buttonText: 'Start 30 Mins Class',
+        durationMinutes: 30,
+        order: 1
+      },
+      {
+        title: '1 Hour Deep Mindful Relaxation',
+        durationTag: '1 HOUR',
+        durationCategory: '1 Hour',
+        subtitle: 'HD 1080p Video • Voice Guided',
+        description: 'Deep somatic release and guided body scan meditation for profound tranquility.',
+        includesText: 'Includes: Yoga Nidra, Gentle Twist, Savasana',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+        buttonText: 'Start 1 Hour Class',
+        durationMinutes: 60,
+        order: 2
+      }
+    ]
+  },
+  {
+    title: 'Advanced Prana Flow',
+    badgeTag: 'ADVANCED',
+    subtitle: 'Deep breath controls and retention techniques for advanced yogis • 25:00',
+    totalDurationText: '25:00',
+    heroImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1000&auto=format&fit=crop',
+    bgImageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop',
+    order: 3,
+    isActive: true,
+    videoClasses: [
+      {
+        title: '45 Min Master Kapalbhati & Bandhas',
+        durationTag: '45 MINS',
+        durationCategory: '1 Hour',
+        subtitle: 'HD 1080p Video • Advanced',
+        description: 'Intense energy activation session focusing on Kumbhaka and Bandhas.',
+        includesText: 'Includes: Kapalbhati, Uddiyana Bandha, Jalandhara Bandha',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+        buttonText: 'Start 45 Mins Class',
+        durationMinutes: 45,
+        order: 1
+      }
+    ]
+  },
+  {
+    title: 'Vitality & Energy Recharge',
+    badgeTag: 'VITALITY',
+    subtitle: 'Revitalize your body with dynamic pranayama and breath locks • 15:00',
+    totalDurationText: '15:00',
+    heroImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1000&auto=format&fit=crop',
+    bgImageUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop',
+    order: 4,
+    isActive: true,
+    videoClasses: [
+      {
+        title: '30 Min Vitality Boost Flow',
+        durationTag: '30 MINS',
+        durationCategory: '30 Mins',
+        subtitle: 'HD 1080p Video • Voice Guided',
+        description: 'Re-energize your mind and body with dynamic breathing and warrior poses.',
+        includesText: 'Includes: Bhastrika, Warrior II, Sun Salutations',
+        thumbnailUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1000&auto=format&fit=crop',
+        videoUrl: 'https://cdn.pixabay.com/video/2021/04/12/70860-536417743_large.mp4',
+        buttonText: 'Start 30 Mins Class',
+        durationMinutes: 30,
+        order: 1
+      }
+    ]
+  }
+];
+
 module.exports = {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -1205,7 +1334,8 @@ module.exports = {
   MOCK_TICKETS,
   MOCK_STORE_CATEGORIES,
   MOCK_STORE_PRODUCTS,
-  MOCK_STORE_COUPONS
+  MOCK_STORE_COUPONS,
+  MOCK_EXPLORE_SESSIONS
 };
 
 

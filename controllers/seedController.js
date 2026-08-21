@@ -18,6 +18,7 @@ const StoreCategory = require('../models/StoreCategory');
 const StoreProduct = require('../models/StoreProduct');
 const StoreCoupon = require('../models/StoreCoupon');
 const Ticket = require('../models/Ticket');
+const ExploreSession = require('../models/ExploreSession');
 const {
   MOCK_USERS,
   MOCK_ASANAS,
@@ -37,7 +38,8 @@ const {
   MOCK_TICKETS,
   MOCK_STORE_CATEGORIES,
   MOCK_STORE_PRODUCTS,
-  MOCK_STORE_COUPONS
+  MOCK_STORE_COUPONS,
+  MOCK_EXPLORE_SESSIONS
 } = require('../utils/seedData');
 
 const runSeeder = async () => {
@@ -61,6 +63,7 @@ const runSeeder = async () => {
   await StoreCategory.deleteMany({});
   await StoreProduct.deleteMany({});
   await StoreCoupon.deleteMany({});
+  await ExploreSession.deleteMany({});
 
   await User.insertMany(MOCK_USERS);
   await Asana.insertMany(MOCK_ASANAS);
@@ -78,6 +81,7 @@ const runSeeder = async () => {
   await DailySchedule.insertMany(MOCK_DAILY_SCHEDULES);
   await Exercise.insertMany(MOCK_EXERCISES);
   await Ticket.insertMany(MOCK_TICKETS);
+  await ExploreSession.insertMany(MOCK_EXPLORE_SESSIONS);
 
   // Seed Store Categories
   const createdCategories = await StoreCategory.insertMany(MOCK_STORE_CATEGORIES);
