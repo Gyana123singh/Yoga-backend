@@ -1,46 +1,54 @@
-const fs = require('fs');
 const path = require('path');
 const cloudinary = require('../config/cloudinary');
 
 /**
- * Saves file buffer locally to backend/uploads as a fallback when Cloudinary fails.
+ * Determine Cloudinary resource_type based on file extension and mimetype.
+ * Cloudinary classifies video and audio under resource_type 'video'.
  */
-const saveBufferLocally = (fileBuffer, originalName = 'media.mp4') => {
-  try {
-    const uploadsDir = path.join(__dirname, '../uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-    const ext = path.extname(originalName) || '.mp4';
-    const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}${ext}`;
-    const filePath = path.join(uploadsDir, filename);
-    fs.writeFileSync(filePath, fileBuffer);
-    console.log(`📁 [Local Disk Storage Fallback Success] Saved file to: ${filePath}`);
-    return filename;
-  } catch (err) {
-    console.error('❌ [Local Disk Storage Fallback Error]:', err.message || err);
-    return null;
+const getResourceType = (originalName = '', mimetype = '') => {
+  const ext = path.extname(originalName || '').toLowerCase();
+  const mime = (mimetype || '').toLowerCase();
+
+  if (
+    mime.startsWith('video/') ||
+    mime.startsWith('audio/') ||
+    /\.(mp4|webm|mov|mkv|avi|mp3|wav|ogg|m4a|aac)$/i.test(ext)
+  ) {
+    return 'video';
   }
+
+  if (
+    mime.startsWith('image/') ||
+    /\.(jpg|jpeg|png|webp|svg|gif|avif)$/i.test(ext)
+  ) {
+    return 'image';
+  }
+
+  return 'auto';
 };
 
 /**
- * Uploads an in-memory Buffer directly to Cloudinary, with local storage fallback if Cloudinary fails.
+ * Uploads an in-memory Buffer directly to Cloudinary via stream.
  */
-const uploadBufferToCloudinary = (fileBuffer, folder = 'yoga_uploads', originalName = '') => {
+const uploadBufferToCloudinary = (fileBuffer, folder = 'yoga_uploads', originalName = '', mimetype = '') => {
   return new Promise((resolve) => {
     const cleanFolder = folder || 'yoga_uploads';
+    const resourceType = getResourceType(originalName, mimetype);
+
+    const uploadOptions = {
+      resource_type: resourceType,
+      folder: cleanFolder
+    };
+
     const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: 'auto',
-        folder: cleanFolder
-      },
+      uploadOptions,
       (error, result) => {
         if (error) {
           console.error('☁️ [Cloudinary Upload Error]:', error.message || error);
           return resolve(null);
         }
         if (result && result.secure_url) {
-          console.log(`☁️ [Cloudinary Upload Success] URL: ${result.secure_url}`);
+          console.log(`☁️ [Cloudinary Upload Success] URL (${resourceType}): ${result.secure_url}`);
           return resolve(result.secure_url);
         }
         resolve(null);
@@ -52,27 +60,24 @@ const uploadBufferToCloudinary = (fileBuffer, folder = 'yoga_uploads', originalN
 };
 
 /**
- * Helper to process Multer memory file and return Cloudinary secure_url or local storage URL
+ * Helper to process Multer memory file and return Cloudinary secure_url.
+ * Storing files locally on disk or VPS server is completely disabled.
  */
 const getMediaUrl = async (req, file, subfolder = 'media') => {
   if (!file) return null;
 
   if (file.buffer) {
-    // 1. Try Cloudinary direct upload
-    const cloudUrl = await uploadBufferToCloudinary(file.buffer, `yoga_${subfolder}`, file.originalname);
+    const cloudUrl = await uploadBufferToCloudinary(
+      file.buffer,
+      `yoga_${subfolder}`,
+      file.originalname,
+      file.mimetype
+    );
+
     if (cloudUrl) return cloudUrl;
 
-    // 2. Local File System Fallback if Cloudinary is unconfigured / credentials invalid
-    console.warn('⚠️ [Media Upload] Cloudinary upload failed. Saving to local disk storage fallback...');
-    const localFileName = saveBufferLocally(file.buffer, file.originalname);
-    if (localFileName) {
-      // Dynamic host detection (e.g. api.yogapranafitness.com on live server vs localhost:5000 on local)
-      const protocol = req ? (req.headers['x-forwarded-proto'] || req.protocol || 'http') : 'http';
-      const host = req ? req.get('host') : (process.env.HOST || 'localhost:5000');
-      const localUrl = `${protocol}://${host}/uploads/${localFileName}`;
-      console.log(`✅ [Local Media URL Generated]: ${localUrl}`);
-      return localUrl;
-    }
+    console.error(`❌ [Media Upload Failed] Cloudinary upload failed for file: ${file.originalname || 'unknown'}`);
+    return null;
   }
 
   return null;
@@ -81,8 +86,5 @@ const getMediaUrl = async (req, file, subfolder = 'media') => {
 module.exports = {
   uploadBufferToCloudinary,
   getMediaUrl,
-  saveBufferLocally
+  getResourceType
 };
-
-
-

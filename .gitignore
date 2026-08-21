@@ -32,3 +32,8 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Local Uploads
+uploads/*
+!uploads/.gitkeep
+

@@ -15,13 +15,11 @@ const getTodayDateString = () => {
 };
 
 /**
- * Helper to build static URL for uploaded files
+ * Helper to build Cloudinary URL for uploaded files
  */
-const buildFileUrl = (req, file) => {
+const buildFileUrl = async (req, file, subfolder = 'media') => {
   if (!file) return null;
-  const protocol = req ? (req.headers['x-forwarded-proto'] || req.protocol || 'http') : 'http';
-  const host = req ? req.get('host') : (process.env.HOST || 'localhost:5000');
-  return `${protocol}://${host}/uploads/media/${file.filename}`;
+  return await getMediaUrl(req, file, subfolder);
 };
 
 const DEFAULT_CATEGORIES = [
@@ -107,22 +105,22 @@ const addOrUpdateCalendarCategory = async (req, res) => {
 
     let bgImageUrl = bgImageUrlCustom || '';
     if (files.bgImage && files.bgImage[0]) {
-      bgImageUrl = (await getMediaUrl(req, files.bgImage[0], 'category_bg')) || buildFileUrl(req, files.bgImage[0]);
+      bgImageUrl = await getMediaUrl(req, files.bgImage[0], 'category_bg');
     }
 
     let frameDesignUrl = frameDesignUrlCustom || '';
     if (files.frameDesign && files.frameDesign[0]) {
-      frameDesignUrl = (await getMediaUrl(req, files.frameDesign[0], 'category_frame')) || buildFileUrl(req, files.frameDesign[0]);
+      frameDesignUrl = await getMediaUrl(req, files.frameDesign[0], 'category_frame');
     }
 
     let bgMusicUrl = bgMusicUrlCustom || '';
     if (files.bgMusic && files.bgMusic[0]) {
-      bgMusicUrl = (await getMediaUrl(req, files.bgMusic[0], 'category_music')) || buildFileUrl(req, files.bgMusic[0]);
+      bgMusicUrl = await getMediaUrl(req, files.bgMusic[0], 'category_music');
     }
 
     let voiceGuidanceUrl = voiceGuidanceUrlCustom || '';
     if (files.voiceGuidance && files.voiceGuidance[0]) {
-      voiceGuidanceUrl = (await getMediaUrl(req, files.voiceGuidance[0], 'category_voice')) || buildFileUrl(req, files.voiceGuidance[0]);
+      voiceGuidanceUrl = await getMediaUrl(req, files.voiceGuidance[0], 'category_voice');
     }
 
     const catName = (name || 'Breathing').trim();
@@ -247,19 +245,19 @@ const addSchedule = async (req, res) => {
       name: { $regex: new RegExp(`^${reqCategory}$`, 'i') }
     }).catch(() => null);
 
-    let bgImageUrl = buildFileUrl(req, files.bgImage ? files.bgImage[0] : null) || bgImageUrlCustom;
+    let bgImageUrl = (files.bgImage && files.bgImage[0]) ? await getMediaUrl(req, files.bgImage[0], 'schedule_bg') : bgImageUrlCustom;
     if (!bgImageUrl && categoryConfig) bgImageUrl = categoryConfig.bgImageUrl;
     if (!bgImageUrl) bgImageUrl = 'https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop';
 
-    let frameDesignUrl = buildFileUrl(req, files.frameDesign ? files.frameDesign[0] : null) || frameDesignUrlCustom;
+    let frameDesignUrl = (files.frameDesign && files.frameDesign[0]) ? await getMediaUrl(req, files.frameDesign[0], 'schedule_frame') : frameDesignUrlCustom;
     if (!frameDesignUrl && categoryConfig) frameDesignUrl = categoryConfig.frameDesignUrl;
     if (!frameDesignUrl) frameDesignUrl = 'https://res.cloudinary.com/demo/image/upload/v1689000000/mandala_ring_frame.png';
 
-    let bgMusicUrl = buildFileUrl(req, files.bgMusic ? files.bgMusic[0] : null) || bgMusicUrlCustom;
+    let bgMusicUrl = (files.bgMusic && files.bgMusic[0]) ? await getMediaUrl(req, files.bgMusic[0], 'schedule_music') : bgMusicUrlCustom;
     if (!bgMusicUrl && categoryConfig) bgMusicUrl = categoryConfig.bgMusicUrl;
     if (!bgMusicUrl) bgMusicUrl = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3';
 
-    let voiceGuidanceUrl = buildFileUrl(req, files.voiceGuidance ? files.voiceGuidance[0] : null) || voiceGuidanceUrlCustom;
+    let voiceGuidanceUrl = (files.voiceGuidance && files.voiceGuidance[0]) ? await getMediaUrl(req, files.voiceGuidance[0], 'schedule_voice') : voiceGuidanceUrlCustom;
     if (!voiceGuidanceUrl && categoryConfig) voiceGuidanceUrl = categoryConfig.voiceGuidanceUrl;
 
     let categoryIcon = icon;
