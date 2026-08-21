@@ -76,14 +76,30 @@ const createYogaProgram = async (req, res) => {
     const files = req.files || {};
     const heroImageUrl = (await buildFileUrl(req, files.heroImage ? files.heroImage[0] : null)) || heroImageUrlCustom || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop';
 
-    let parsedTags = [];
-    if (tags) {
-      try {
-        parsedTags = typeof tags === 'string' ? JSON.parse(tags) : tags;
-      } catch (e) {
-        parsedTags = typeof tags === 'string' ? tags.split(',').map(t => t.trim()) : tags;
+    function sanitizeTags(input) {
+      if (!input) return [];
+      let result = [];
+      let current = input;
+      if (typeof current === 'string') {
+        try {
+          current = JSON.parse(current);
+        } catch (e) {
+          result = current.split(',').map(t => t.trim());
+        }
       }
+      if (Array.isArray(current)) {
+        for (const item of current) {
+          result = result.concat(sanitizeTags(item));
+        }
+      } else if (typeof current === 'string') {
+        result.push(current.trim());
+      }
+      return result
+        .map(t => typeof t === 'string' ? t.replace(/^[\[\"'\s]+|[\]\"'\s]+$/g, '').replace(/\\+/g, '').trim() : '')
+        .filter(t => t.length > 0 && t.length < 35 && !t.startsWith('[') && !t.startsWith('{'));
     }
+
+    let parsedTags = sanitizeTags(tags);
 
     let parsedSchedules = [];
     if (dailySchedules) {
